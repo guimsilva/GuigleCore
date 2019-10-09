@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,8 +10,12 @@ namespace GuigleApi
 {
     public class GooglePlacesApi : GoogleApiBase, IGooglePlacesApi
     {
+        private readonly GoogleGeocodingApi _googleGeocodingApi;
+        private readonly List<PlaceType> _politicalLocalityTypes = new List<PlaceType>() { PlaceType.locality, PlaceType.political };
+
         public GooglePlacesApi(string apiKey) : base(apiKey)
         {
+            _googleGeocodingApi = new GoogleGeocodingApi(apiKey);
         }
 
         /// <summary>
@@ -80,19 +85,20 @@ namespace GuigleApi
         /// <param name="keyWord">Any key word to search for. E.g. cruise.</param>
         /// <param name="rankBy">Rank by distance or prominence.</param>
         /// <param name="moreOptionalParameters">There are more optional parameters that can be added to the search request. Check Google Developers Api for more info.</param>
-        public async Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, string moreOptionalParameters = null)
+        public async Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
         {
             ValidateSearchOptionalParams(radiusInMeters, language, type, keyWord, rankBy, moreOptionalParameters);
 
             var uri = GetPlacesQueryString(
                 "nearbysearch",
+                new (string, string)[] {
                 ("location", $"{lat},{lng}"),
                 ("radius", radiusInMeters.ToString()),
                 ("language", language),
                 ("type", type?.ToString()),
                 ("keyword", keyWord),
-                ("rankby", rankBy?.ToString()),
-                (string.Empty, moreOptionalParameters)
+                ("rankby", rankBy?.ToString())}
+                    .Concat(moreOptionalParameters).ToArray()
             );
 
             var response = await client.GetAsync(uri);
@@ -111,7 +117,7 @@ namespace GuigleApi
         /// <param name="language">See https://developers.google.com/maps/faq?authuser=1#languagesupport.</param>
         /// <param name="type"></param>
         /// <param name="moreOptionalParameters">There are more optional parameters that can be added to the search request. Check Google Developers Api for more info.</param>
-        public async Task<Response<Place>> SearchPlaceByQuery(HttpClient client, string query, double? lat, double? lng, int? radiusInMeters = null, string language = null, PlaceType? type = null, string moreOptionalParameters = null)
+        public async Task<Response<Place>> SearchPlaceByQuery(HttpClient client, string query, double? lat, double? lng, int? radiusInMeters = null, string language = null, PlaceType? type = null, params (string, string)[] moreOptionalParameters)
         {
             ValidateSearchOptionalParams(radiusInMeters, language, type, null, null, moreOptionalParameters);
 
@@ -119,12 +125,12 @@ namespace GuigleApi
 
             var uri = GetPlacesQueryString(
                 "textsearch",
-                ("query", query),
+                new (string, string)[] {("query", query),
                 ("location", location),
                 ("radius", radiusInMeters?.ToString()),
                 ("language", language),
-                ("type", type?.ToString()),
-                (string.Empty, moreOptionalParameters)
+                ("type", type?.ToString())}
+                    .Concat(moreOptionalParameters).ToArray()
             );
 
             var response = await client.GetAsync(uri);
@@ -145,6 +151,18 @@ namespace GuigleApi
             var response = await client.GetAsync(uri);
 
             return await Place.ParseResponse(response);
+        }
+
+        public async Task<Place> GetExactPlaceByAddress(HttpClient client, string address)
+        {
+            var locality = await _googleGeocodingApi.GetCoordinatesFromAddress(client, address);
+
+            var place = await SearchPlaceNearBy(client, locality.Item1, locality.Item2, 5);
+
+            var exactPlace = place.Results
+                .FirstOrDefault(result => !_politicalLocalityTypes.All(pl => result.Types.Contains(pl)));
+
+            return exactPlace;
         }
     }
 }

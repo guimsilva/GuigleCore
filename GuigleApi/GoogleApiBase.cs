@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
@@ -39,16 +40,23 @@ namespace GuigleApi
             return $"{GeocodingUrl}json?{queryString}";
         }
 
-        protected static void ValidateSearchOptionalParams(int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, string moreOptionalParameters = null)
+        protected static void ValidateSearchOptionalParams(int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
         {
-            if (rankBy.HasValue && rankBy.Value == RankBy.distance)
+            var paramsList = new List<(string, string)>(moreOptionalParameters);
+            var rankby = paramsList.FirstOrDefault(param => param.Item1 == "rankby");
+            var radius = paramsList.FirstOrDefault(param => param.Item1 == "radius");
+            var name = paramsList.FirstOrDefault(param => param.Item1 == "name");
+            var stype = paramsList.FirstOrDefault(param => param.Item1 == "type");
+            var skeyWord = paramsList.FirstOrDefault(param => param.Item1 == "keyword");
+
+            if (rankBy.HasValue && rankBy.Value == RankBy.distance || rankby.Item2 == "distance")
             {
-                if (radiusInMeters.HasValue)
+                if (radiusInMeters.HasValue || !string.IsNullOrWhiteSpace(radius.Item2))
                 {
                     throw new Exception("Can't have Rankby.distance and radius at the same time'");
                 }
 
-                if (String.IsNullOrWhiteSpace(keyWord) && !type.HasValue && !(moreOptionalParameters?.Contains("name") ?? false) && !(moreOptionalParameters?.Contains("type") ?? false) && !(moreOptionalParameters?.Contains("keyword") ?? false))
+                if (String.IsNullOrWhiteSpace(keyWord) && string.IsNullOrWhiteSpace(skeyWord.Item2) && !type.HasValue && string.IsNullOrWhiteSpace(stype.Item2) && string.IsNullOrWhiteSpace(name.Item2))
                 {
                     throw new Exception("When using RankBy.distance must also have either keyWorkd, name or type");
                 }

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -33,9 +32,9 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task GetAddressFromCoordinatesAsync_ShouldReturnAddressResponse()
+        public async Task GetAddressFromCoordinates_ShouldReturnAddressResponse()
         {
-            var address = await _googleGeocodingApi.GetAddressFromCoordinatesAsync(_client, _addressLocation1.Lat, _addressLocation1.Lng);
+            var address = await _googleGeocodingApi.GetAddressFromCoordinates(_client, _addressLocation1.Lat, _addressLocation1.Lng);
 
             Assert.Equal("OK", address.Status);
             Assert.NotEmpty(address.Results);
@@ -43,9 +42,9 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchAddressAsync_ShouldReturnAddressResponse()
+        public async Task SearchAddress_ShouldReturnAddressResponse()
         {
-            var address = await _googleGeocodingApi.SearchAddressAsync(_client, Address1);
+            var address = await _googleGeocodingApi.SearchAddress(_client, Address1);
 
             Assert.Equal("OK", address.Status);
             Assert.NotEmpty(address.Results);

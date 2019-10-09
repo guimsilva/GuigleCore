@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -22,6 +22,7 @@ namespace GuigleApiXUnitIntegrationTest
         private const string PlaceId2 = "ChIJ6cnyXqVQkWsRwPPRvGNJop8";
         private const string Address1 = "21 Park Rd, Milton QLD 4064, Australia";
         private readonly Location _placeLocation1 = new Location() {Lat = -27.4703967, Lng = 153.0042494};
+        private readonly List<PlaceType> _politicalLocalityTypes = new List<PlaceType>() { PlaceType.locality, PlaceType.political };
 
         public GooglePlacesApiTest()
         {
@@ -82,6 +83,25 @@ namespace GuigleApiXUnitIntegrationTest
             Assert.Equal("OK", place.Status);
             Assert.NotEmpty(place.Results);
             Assert.NotEmpty(place.Results.Where(p => p.PlaceId == PlaceId2));
+        }
+
+        [Fact]
+        public async Task SearchPlaceNearByQueryWithMoreOptionalParams_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.SearchPlaceByQuery(_client, Address1, null, null, null, "en-AU", PlaceType.establishment, ("radius", "10"));
+
+            Assert.Equal("OK", place.Status);
+            Assert.NotEmpty(place.Results);
+            Assert.NotEmpty(place.Results.Where(p => p.FormattedAddress == Address1));
+        }
+
+        [Fact]
+        public async Task SearchExactPlaceByAddress_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.GetExactPlaceByAddress(_client, Address1);
+
+            Assert.NotNull(place);
+            Assert.Equal(PlaceId2, place.PlaceId);
         }
     }
 }

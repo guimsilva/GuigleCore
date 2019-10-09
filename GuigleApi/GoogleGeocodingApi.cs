@@ -20,7 +20,7 @@ namespace GuigleApi
         /// <param name="lat">The latitude to search on Google Api.</param>
         /// <param name="lng">The longitude to search on Google Api.</param>
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
-        public async Task<Response<Address>> GetAddressFromCoordinatesAsync(HttpClient client, double lat, double lng)
+        public async Task<Response<Address>> GetAddressFromCoordinates(HttpClient client, double lat, double lng)
         {
             var location = $"{lat},{lng}";
 
@@ -38,9 +38,9 @@ namespace GuigleApi
         /// <param name="lat">The latitude to search on Google Api.</param>
         /// <param name="lng">The longitude to search on Google Api.</param>
         /// <returns>Returns a Tuple<string, string, string> where item1 is the city short name, item2 is the state short name and item3 is the country long name. Returns a Tuple containing nulls if nothing is returned from the Api.</returns>
-        public async Task<Tuple<string, string, string>> GetCityFromCoordinatesAsync(HttpClient client, double lat, double lng)
+        public async Task<Tuple<string, string, string>> GetCityFromCoordinates(HttpClient client, double lat, double lng)
         {
-            var contentResult = await GetAddressFromCoordinatesAsync(client, lat, lng);
+            var contentResult = await GetAddressFromCoordinates(client, lat, lng);
 
             var addressComponents = contentResult.Results.SelectMany(t => t.AddressComponents).ToList();
 
@@ -62,7 +62,7 @@ namespace GuigleApi
         /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
         /// <param name="address">The address to search on Google Api.</param>
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
-        public async Task<Response<Address>> SearchAddressAsync(HttpClient client, string address)
+        public async Task<Response<Address>> SearchAddress(HttpClient client, string address)
         {
             var uri = GetGeocodingQueryString(("address", address));
 
@@ -77,9 +77,9 @@ namespace GuigleApi
         /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
         /// <param name="address">The address to search on Google Api.</param>
         /// <returns>Returns a Tuple<double, double> where item1 is latitude and item2 is longitude. Returns null if nothing is returned from the Api.</returns>
-        public async Task<Tuple<double, double>> GetCoordinatesFromAddressAsync(HttpClient client, string address)
+        public async Task<Tuple<double, double>> GetCoordinatesFromAddress(HttpClient client, string address)
         {
-            var result = await SearchAddressAsync(client, address);
+            var result = await SearchAddress(client, address);
 
             var firstResult = result.Results.FirstOrDefault();
 
@@ -101,7 +101,7 @@ namespace GuigleApi
         /// <param name="southwest">The south west coordinates of the bounding box.</param>
         /// <param name="northeast">The north east coordinates of the bounding box.</param>
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
-        public async Task<Response<Address>> SearchAddressAsync(HttpClient client, string address, Tuple<double, double> southwest, Tuple<double, double> northeast)
+        public async Task<Response<Address>> SearchAddress(HttpClient client, string address, Tuple<double, double> southwest, Tuple<double, double> northeast)
         {
             var uri = GetGeocodingQueryString(
                 ("address", address),

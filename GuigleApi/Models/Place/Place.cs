@@ -54,7 +54,7 @@ namespace GuigleApi.Models.Place
 
             if (result.Status == "INVALID_REQUEST")
             {
-                throw new HttpRequestException(result.ErrorMessage ?? "Error");
+                throw new HttpRequestException(result.ErrorMessage ?? "INVALID_REQUEST");
             }
 
             return result;

@@ -17,6 +17,7 @@ namespace GuigleApi
         Task<Response<Place>> FindBusiness(HttpClient client, string query, double? lat = null, double? lng = null, int? radiusInMeters = 50000, string region = null, string language = null, string pageToken = null, PlaceType? type = null, string[] returnFields = null);
 
         Task<Response<Place>> FindPlaces(HttpClient client, string input, string[] returnFields = null);
+
         Task<Response<Place>> GetPlaceById(HttpClient client, string placeId, string[] returnFields = null);
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace GuigleApi
         /// <param name="keyWord">Any key word to search for. E.g. cruise.</param>
         /// <param name="rankBy">Rank by distance or prominence.</param>
         /// <param name="moreOptionalParameters">There are more optional parameters that can be added to the search request. Check Google Developers Api for more info.</param>
-        Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, string moreOptionalParameters = null);
+        Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters);
 
         /// <summary>
         /// Gets up to 20 places returned from Google Places Api based on the query provided.
@@ -44,7 +45,7 @@ namespace GuigleApi
         /// <param name="language">See https://developers.google.com/maps/faq?authuser=1#languagesupport.</param>
         /// <param name="type"></param>
         /// <param name="moreOptionalParameters">There are more optional parameters that can be added to the search request. Check Google Developers Api for more info.</param>
-        Task<Response<Place>> SearchPlaceByQuery(HttpClient client, string query, double? lat, double? lng, int? radiusInMeters = null, string language = null, PlaceType? type = null, string moreOptionalParameters = null);
+        Task<Response<Place>> SearchPlaceByQuery(HttpClient client, string query, double? lat, double? lng, int? radiusInMeters = null, string language = null, PlaceType? type = null, params (string, string)[] moreOptionalParameters);
 
         /// <summary>
         /// Gets next page (or next 20 places) returned from Google Places Api based on the token provided.
@@ -53,5 +54,14 @@ namespace GuigleApi
         /// <param name="pageToken">The token returned on a previous search. This token will be used to retrieve the next page (20 results).</param>
         /// <returns></returns>
         Task<Response<Place>> SearchPlaceNearBy(HttpClient client, string pageToken);
+
+        /// <summary>
+        /// Similar to the Google Maps "What's here?", it will return the closes non-political-locality place for a given address
+        /// </summary>
+        /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
+        /// <param name="address">The stablishment address</param>
+        /// <param name="returnFields">The fields you want to be returned by the query</param>
+        /// <returns></returns>
+        Task<Place> GetExactPlaceByAddress(HttpClient client, string address);
     }
 }
