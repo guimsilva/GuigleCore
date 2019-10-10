@@ -38,6 +38,8 @@ namespace GuigleApi.Models.Address
             try
             {
                 result = ParseResponse(JsonConvert.DeserializeObject<Response<AddressT>>(content));
+                result.Results?.ForEach(SetAddressStringTypes);
+                result.Candidates?.ForEach(SetAddressStringTypes);
             }
             catch (JsonSerializationException e)
             {
@@ -55,6 +57,13 @@ namespace GuigleApi.Models.Address
             }
 
             return result;
+        }
+
+        private static void SetAddressStringTypes(Address address)
+        {
+            if (address.Types is null) return;
+            address.StringTypes = new List<string>();
+            address.Types.ForEach(type => address.StringTypes.Add(type.ToString()));
         }
 
         private static Response<Address> ParseResponse(Response<AddressT> addressT)

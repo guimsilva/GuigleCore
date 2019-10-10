@@ -41,6 +41,8 @@ namespace GuigleApi.Models.Place
             try
             {
                 result = ParseResponse(JsonConvert.DeserializeObject<Response<PlaceT>>(content));
+                result.Results?.ForEach(SetPlacetringTypes);
+                result.Candidates?.ForEach(SetPlacetringTypes);
             }
             catch (JsonSerializationException e)
             {
@@ -58,6 +60,13 @@ namespace GuigleApi.Models.Place
             }
 
             return result;
+        }
+
+        private static void SetPlacetringTypes(Place place)
+        {
+            if (place.Types is null) return;
+            place.StringTypes = new List<string>();
+            place.Types.ForEach(type => place.StringTypes.Add(type.ToString()));
         }
 
         private static Response<Place> ParseResponse(Response<PlaceT> placeT)

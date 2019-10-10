@@ -2,13 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageId>GuigleCore</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.3</Version>
     <Authors>Gui Silva</Authors>
     <Company>Devs4Apps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Library to query Google Maps Api</Description>
+    <PackageProjectUrl>https://github.com/guimsilva/GuigleCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/guimsilva/GuigleCore</RepositoryUrl>
+    <PackageTags>Google Maps; Places; Geocoding; Geolocation</PackageTags>
+    <PackageReleaseNotes>Now whenever there are Address or Place Types set, the StringTypes properties will be set as well. Before it was only set if there was an error when parsing the Types.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
