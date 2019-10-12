@@ -19,9 +19,14 @@ namespace GuigleApiXUnitIntegrationTest
         private readonly HttpClient _client;
 
         private const string PlaceId1 = "ChIJ_5TkXqVQkWsREFoAyYbjg-g";
-        private const string PlaceId2 = "ChIJ6cnyXqVQkWsRwPPRvGNJop8";
+        private const string PlaceId1_1 = "ChIJ6cnyXqVQkWsRwPPRvGNJop8";
+        private const string PlaceId2 = "ChIJvxeKP41ZkWsRM_uHzDS5mNk";
+        private const string PlaceId3 = "ChIJLTwxhxBakWsRIOvwPqknAOg";
         private const string Address1 = "21 Park Rd, Milton QLD 4064, Australia";
         private readonly Location _placeLocation1 = new Location() {Lat = -27.4703967, Lng = 153.0042494};
+        private readonly Location _placeLocation2 = new Location() {Lat = -27.456859, Lng = 153.039852};
+        private readonly Location _placeLocation3 = new Location() {Lat = -27.474310, Lng = 153.029145};
+        private readonly Location _placeLocation4 = new Location() {Lat = -27.463087, Lng = 153.041160 };
         private readonly List<PlaceType> _politicalLocalityTypes = new List<PlaceType>() { PlaceType.locality, PlaceType.political };
 
         public GooglePlacesApiTest()
@@ -59,7 +64,7 @@ namespace GuigleApiXUnitIntegrationTest
         [Fact]
         public async Task GetPlaceById_ShouldReturnPlaceResponse()
         {
-            var place = await _googlePlacesApi.GetPlaceById(_client, PlaceId1);
+            var place = await _googlePlacesApi.GetPlaceDetailsById(_client, PlaceId1);
 
             Assert.Equal("OK", place.Status);
             Assert.Equal(Address1, place.Result.FormattedAddress);
@@ -72,7 +77,7 @@ namespace GuigleApiXUnitIntegrationTest
 
             Assert.Equal("OK", place.Status);
             Assert.NotEmpty(place.Results);
-            Assert.NotEmpty(place.Results.Where(p => p.PlaceId == PlaceId2));
+            Assert.NotEmpty(place.Results.Where(p => p.PlaceId == PlaceId1_1));
         }
 
         [Fact]
@@ -82,7 +87,7 @@ namespace GuigleApiXUnitIntegrationTest
 
             Assert.Equal("OK", place.Status);
             Assert.NotEmpty(place.Results);
-            Assert.NotEmpty(place.Results.Where(p => p.PlaceId == PlaceId2));
+            Assert.NotEmpty(place.Results.Where(p => p.PlaceId == PlaceId1_1));
         }
 
         [Fact]
@@ -96,12 +101,39 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchExactPlaceByAddress_ShouldReturnPlaceResponse()
+        public async Task SearchExactPlaceByAddress1_ShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.GetExactPlaceByAddress(_client, Address1);
 
             Assert.NotNull(place);
+            Assert.Equal(PlaceId1_1, place.PlaceId);
+        }
+
+        [Fact]
+        public async Task SearchExactPlaceByAddress2_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.GetExactPlaceByLocation(_client, _placeLocation2.Lat, _placeLocation2.Lng);
+
+            Assert.NotNull(place);
             Assert.Equal(PlaceId2, place.PlaceId);
+        }
+
+        [Fact]
+        public async Task SearchExactPlaceByAddress3_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.GetExactPlaceByLocation(_client, _placeLocation3.Lat, _placeLocation3.Lng);
+
+            Assert.NotNull(place);
+            Assert.Equal(PlaceId3, place.PlaceId);
+        }
+
+        [Fact]
+        public async Task SearchExactPlaceByAddress4_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.GetExactPlaceByLocation(_client, _placeLocation4.Lat, _placeLocation4.Lng);
+
+            Assert.NotNull(place);
+            Assert.Equal("Himalayan Cafe", place.Name);
         }
     }
 }

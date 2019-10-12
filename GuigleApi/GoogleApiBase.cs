@@ -40,7 +40,7 @@ namespace GuigleApi
             return $"{GeocodingUrl}json?{queryString}";
         }
 
-        protected static void ValidateSearchOptionalParams(int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
+        protected static void ValidateSearchOptionalParams(int? radiusInMeters = null, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
         {
             var paramsList = moreOptionalParameters.ToDictionary(param => param.Item1, param => param.Item2);
             paramsList.TryGetValue("rankby", out var rankby);

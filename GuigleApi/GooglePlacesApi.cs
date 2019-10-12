@@ -60,11 +60,12 @@ namespace GuigleApi
             return await Place.ParseResponse(response);
         }
 
-        public async Task<Response<Place>> GetPlaceById(HttpClient client, string placeId, string[] returnFields = null)
+        public async Task<Response<Place>> GetPlaceDetailsById(HttpClient client, string placeId, string[] returnFields = null, string sessionToken = null)
         {
             var uri = GetPlacesQueryString(
                 "details",
                 ("place_id", placeId),
+                ("sessionToken", sessionToken),
                 ("fields", string.Join(",", returnFields ?? GoogleApiBase.DetailsFieldsBasic.Concat(GoogleApiBase.DetailsFieldsContact).Concat(GoogleApiBase.DetailsFieldsAtmosphere)))
             );
 
@@ -85,7 +86,7 @@ namespace GuigleApi
         /// <param name="keyWord">Any key word to search for. E.g. cruise.</param>
         /// <param name="rankBy">Rank by distance or prominence.</param>
         /// <param name="moreOptionalParameters">There are more optional parameters that can be added to the search request. Check Google Developers Api for more info.</param>
-        public async Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = 50000, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
+        public async Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
         {
             ValidateSearchOptionalParams(radiusInMeters, language, type, keyWord, rankBy, moreOptionalParameters);
 
@@ -153,14 +154,50 @@ namespace GuigleApi
             return await Place.ParseResponse(response);
         }
 
+        /// <summary>
+        /// Similar to the "What's here?" in Google Maps.
+        /// </summary>
+        /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
+        /// <param name="address">The address to search on Google Api.</param>
+        /// <param name="lat">The latitude to search on Google Api.</param>
+        /// <param name="lng">The longitude to search on Google Api.</param>
+        public async Task<Place> GetExactPlaceByLocation(HttpClient client, double lat, double lng)
+        {
+            var place = await SearchPlaceNearBy(client, lat, lng, type: PlaceType.point_of_interest, rankBy: RankBy.prominence, radiusInMeters: 10);
+
+            var exactPlace =
+                place.Results
+                    .FirstOrDefault(result =>
+                        !_politicalLocalityTypes.All(pl =>
+                            (result.Types?.Contains(pl) ?? false)
+                            || (result.StringTypes?.Contains(pl.ToString()) ?? false)));
+
+            if (exactPlace is null)
+            {
+                place = await SearchPlaceNearBy(client, lat, lng, 5);
+
+                exactPlace =
+                    place.Results
+                        .FirstOrDefault(result =>
+                            !_politicalLocalityTypes.All(pl =>
+                                (result.Types?.Contains(pl) ?? false)
+                                || (result.StringTypes?.Contains(pl.ToString()) ?? false)))
+                    ?? place.Results.FirstOrDefault();
+            }
+
+            return exactPlace;
+        }
+
+        /// <summary>
+        /// Similar to the "What's here?" in Google Maps.
+        /// </summary>
+        /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
+        /// <param name="address">The address to search on Google Api.</param>
         public async Task<Place> GetExactPlaceByAddress(HttpClient client, string address)
         {
             var locality = await _googleGeocodingApi.GetCoordinatesFromAddress(client, address);
 
-            var place = await SearchPlaceNearBy(client, locality.Item1, locality.Item2, 5);
-
-            var exactPlace = place.Results
-                .FirstOrDefault(result => !_politicalLocalityTypes.All(pl => result.Types.Contains(pl)));
+            var exactPlace = await GetExactPlaceByLocation(client, locality.Item1, locality.Item2);
 
             return exactPlace;
         }

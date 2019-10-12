@@ -18,7 +18,7 @@ namespace GuigleApi
 
         Task<Response<Place>> FindPlaces(HttpClient client, string input, string[] returnFields = null);
 
-        Task<Response<Place>> GetPlaceById(HttpClient client, string placeId, string[] returnFields = null);
+        Task<Response<Place>> GetPlaceDetailsById(HttpClient client, string placeId, string[] returnFields = null, string sessionToken = null);
 
         /// <summary>
         /// Gets up to 20 places returned from Google Places Api based on the coordinates provided.
