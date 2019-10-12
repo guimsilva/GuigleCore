@@ -76,8 +76,8 @@ namespace GuigleApi
         /// </summary>
         /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
         /// <param name="address">The address to search on Google Api.</param>
-        /// <returns>Returns a Tuple<double, double> where item1 is latitude and item2 is longitude. Returns null if nothing is returned from the Api.</returns>
-        public async Task<Tuple<double, double>> GetCoordinatesFromAddress(HttpClient client, string address)
+        /// <returns>Returns a Location where item1 is latitude and item2 is longitude. Returns null if nothing is returned from the Api.</returns>
+        public async Task<Location> GetCoordinatesFromAddress(HttpClient client, string address)
         {
             var result = await SearchAddress(client, address);
 
@@ -85,7 +85,7 @@ namespace GuigleApi
 
             if (firstResult != null)
             {
-                return new Tuple<double, double>(
+                return new Location(
                     firstResult.Geometry?.Location?.Lat ?? 0,
                     firstResult.Geometry?.Location?.Lng ?? 0);
             }
@@ -101,11 +101,11 @@ namespace GuigleApi
         /// <param name="southwest">The south west coordinates of the bounding box.</param>
         /// <param name="northeast">The north east coordinates of the bounding box.</param>
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
-        public async Task<Response<Address>> SearchAddress(HttpClient client, string address, Tuple<double, double> southwest, Tuple<double, double> northeast)
+        public async Task<Response<Address>> SearchAddress(HttpClient client, string address, Location southwest, Location northeast)
         {
             var uri = GetGeocodingQueryString(
                 ("address", address),
-                ("bounds", $"{southwest.Item1},{southwest.Item2}|{northeast.Item1},{northeast.Item2}"));
+                ("bounds", $"{southwest.Lat},{southwest.Lng}|{northeast.Lat},{northeast.Lng}"));
 
             var response = await client.GetAsync(uri);
 

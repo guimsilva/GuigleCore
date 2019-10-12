@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageId>GuigleCore</PackageId>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Authors>Gui Silva</Authors>
     <Company>Devs4Apps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -13,9 +13,7 @@
     <PackageProjectUrl>https://github.com/guimsilva/GuigleCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/guimsilva/GuigleCore</RepositoryUrl>
     <PackageTags>Google Maps; Places; Geocoding; Geolocation</PackageTags>
-    <PackageReleaseNotes>- Big improvement to look for exact places via GetExactPlaceByAddress
-- Added GetExactPlaceByLocation method (which will also use GetExactPlaceByAddress under the hood)
-- Added session token for GetPlaceDetails</PackageReleaseNotes>
+    <PackageReleaseNotes>- Replaced Tuple&lt;double, double&gt; by Location</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

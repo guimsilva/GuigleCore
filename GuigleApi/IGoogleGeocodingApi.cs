@@ -39,8 +39,8 @@ namespace GuigleApi
         /// </summary>
         /// <param name="client">The HttpClient object. Make sure it's not passed closed.</param>
         /// <param name="address">The address to search on Google Api.</param>
-        /// <returns>Returns a Tuple<double, double> where item1 is latitude and item2 is longitude. Returns null if nothing is returned from the Api.</returns>
-        Task<Tuple<double, double>> GetCoordinatesFromAddress(HttpClient client, string address);
+        /// <returns>Returns a Location where item1 is latitude and item2 is longitude. Returns null if nothing is returned from the Api.</returns>
+        Task<Location> GetCoordinatesFromAddress(HttpClient client, string address);
 
         /// <summary>
         /// Search for an address preferring results within the viewport provided and returns all results from Google Api.
@@ -50,6 +50,6 @@ namespace GuigleApi
         /// <param name="southwest">The south west coordinates of the bounding box.</param>
         /// <param name="northeast">The north east coordinates of the bounding box.</param>
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
-        Task<Response<Address>> SearchAddress(HttpClient client, string address, Tuple<double, double> southwest, Tuple<double, double> northeast);
+        Task<Response<Address>> SearchAddress(HttpClient client, string address, Location southwest, Location northeast);
     }
 }

@@ -13,5 +13,11 @@ namespace GuigleApi.Models.Address
 
         [JsonProperty("lng")]
         public double Lng { get; set; }
+
+        public Location(double lat, double lng)
+        {
+            Lat = lat;
+            Lng = lng;
+        }
     }
 }

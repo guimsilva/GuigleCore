@@ -195,9 +195,9 @@ namespace GuigleApi
         /// <param name="address">The address to search on Google Api.</param>
         public async Task<Place> GetExactPlaceByAddress(HttpClient client, string address)
         {
-            var locality = await _googleGeocodingApi.GetCoordinatesFromAddress(client, address);
+            var location = await _googleGeocodingApi.GetCoordinatesFromAddress(client, address);
 
-            var exactPlace = await GetExactPlaceByLocation(client, locality.Item1, locality.Item2);
+            var exactPlace = await GetExactPlaceByLocation(client, location.Lat, location.Lng);
 
             return exactPlace;
         }

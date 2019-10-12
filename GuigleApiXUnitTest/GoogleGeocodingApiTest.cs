@@ -17,7 +17,7 @@ namespace GuigleApiXUnitIntegrationTest
         private readonly HttpClient _client;
 
         private const string Address1 = "21 Park Rd, Milton QLD 4064, Australia";
-        private readonly Location _addressLocation1 = new Location() {Lat = -27.4703967, Lng = 153.0042494};
+        private readonly Location _addressLocation1 = new Location(-27.4703967, 153.0042494);
 
         public GoogleGeocodingApiTest()
         {
