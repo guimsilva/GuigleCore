@@ -65,7 +65,7 @@ namespace GuigleApi
             var uri = GetPlacesQueryString(
                 "details",
                 ("place_id", placeId),
-                ("sessionToken", sessionToken),
+                ("sessiontoken", sessionToken),
                 ("fields", string.Join(",", returnFields ?? GoogleApiBase.DetailsFieldsBasic.Concat(GoogleApiBase.DetailsFieldsContact).Concat(GoogleApiBase.DetailsFieldsAtmosphere)))
             );
 

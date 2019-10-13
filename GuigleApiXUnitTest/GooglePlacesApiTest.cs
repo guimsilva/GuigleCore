@@ -27,7 +27,6 @@ namespace GuigleApiXUnitIntegrationTest
         private readonly Location _placeLocation2 = new Location(-27.456859, 153.039852);
         private readonly Location _placeLocation3 = new Location(-27.474310, 153.029145);
         private readonly Location _placeLocation4 = new Location(-27.463087, 153.041160 );
-        private readonly List<PlaceType> _politicalLocalityTypes = new List<PlaceType>() { PlaceType.locality, PlaceType.political };
 
         public GooglePlacesApiTest()
         {
@@ -119,15 +118,15 @@ namespace GuigleApiXUnitIntegrationTest
                 (_placeLocation4, PlaceId4)
             };
 
-            foreach (var locationAndPlaceId in locationAndPlaceIds)
+            foreach (var (location, placeId) in locationAndPlaceIds)
             {
                 var place = await _googlePlacesApi.GetExactPlaceByLocation(
                     _client,
-                    locationAndPlaceId.Item1.Lat,
-                    locationAndPlaceId.Item1.Lng);
+                    location.Lat,
+                    location.Lng);
 
                 Assert.NotNull(place);
-                Assert.Equal(locationAndPlaceId.Item2, place.PlaceId);
+                Assert.Equal(placeId, place.PlaceId);
             }
         }
     }
