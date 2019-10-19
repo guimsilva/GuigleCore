@@ -11,6 +11,7 @@ namespace GuigleApi.Models.Place
         [JsonProperty("types")]
         public List<PlaceType> Types { get; set; }
 
+        [JsonIgnore]
         public List<string> StringTypes { get; set; }
     }
 }
