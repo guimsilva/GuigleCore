@@ -25,6 +25,22 @@ namespace GuigleApi.Models.Address
 
         public List<string> StringTypes { get; set; }
 
+        public string Country =>
+            AddressComponents?
+                .FirstOrDefault(r => r.StringTypes.Contains(AddressType.country.ToString()))?.LongName;
+
+        public string State =>
+            AddressComponents?
+                .FirstOrDefault(r => r.StringTypes.Contains(AddressType.administrative_area_level_1.ToString()))?.ShortName;
+
+        public string City =>
+            AddressComponents?
+                .FirstOrDefault(r => r.StringTypes.Contains(AddressType.administrative_area_level_2.ToString()))?.ShortName;
+
+        public string Suburb =>
+            AddressComponents?.FirstOrDefault(r => r.StringTypes.Contains(AddressType.administrative_area_level_3.ToString()))?.ShortName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes.Contains(AddressType.locality.ToString()))?.ShortName;
+
         public static async Task<Response<Address>> ParseResponse(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
@@ -64,6 +80,11 @@ namespace GuigleApi.Models.Address
             if (address.Types is null) return;
             address.StringTypes = new List<string>();
             address.Types.ForEach(type => address.StringTypes.Add(type.ToString()));
+            address.AddressComponents.ForEach(component =>
+            {
+                component.StringTypes = new List<string>();
+                component.Types.ForEach(type => component.StringTypes.Add(type.ToString()));
+            });
         }
 
         private static Response<Address> ParseResponse(Response<AddressT> addressT)

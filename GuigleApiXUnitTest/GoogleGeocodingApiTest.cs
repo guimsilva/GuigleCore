@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GuigleApi;
 using GuigleApi.Models.Address;
+using GuigleApi.Models.Extension;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -49,6 +50,18 @@ namespace GuigleApiXUnitIntegrationTest
             Assert.Equal("OK", address.Status);
             Assert.NotEmpty(address.Results);
             Assert.NotEmpty(address.Results.Where(p => p.FormattedAddress == Address1));
+        }
+
+        [Fact]
+        public async Task GetAddressPartsFromSearchAddress_ShouldReturnAddressResponse()
+        {
+            var address = await _googleGeocodingApi.SearchAddress(_client, Address1);
+
+            Assert.Equal("OK", address.Status);
+            Assert.Equal("Milton", address.GetSuburb());
+            Assert.Equal("Brisbane", address.GetCity());
+            Assert.Equal("QLD", address.GetState());
+            Assert.Equal("Australia", address.GetCountry());
         }
     }
 }
