@@ -27,19 +27,19 @@ namespace GuigleApi.Models.Address
 
         public string Country =>
             AddressComponents?
-                .FirstOrDefault(r => r.StringTypes.Contains(AddressType.country.ToString()))?.LongName;
+                .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.country.ToString()) ?? false)?.LongName;
 
         public string State =>
             AddressComponents?
-                .FirstOrDefault(r => r.StringTypes.Contains(AddressType.administrative_area_level_1.ToString()))?.ShortName;
+                .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_1.ToString()) ?? false)?.ShortName;
 
         public string City =>
             AddressComponents?
-                .FirstOrDefault(r => r.StringTypes.Contains(AddressType.administrative_area_level_2.ToString()))?.ShortName;
+                .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_2.ToString()) ?? false)?.ShortName;
 
         public string Suburb =>
-            AddressComponents?.FirstOrDefault(r => r.StringTypes.Contains(AddressType.administrative_area_level_3.ToString()))?.ShortName ??
-            AddressComponents?.FirstOrDefault(r => r.StringTypes.Contains(AddressType.locality.ToString()))?.ShortName;
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false)?.ShortName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.ShortName;
 
         public static async Task<Response<Address>> ParseResponse(HttpResponseMessage response)
         {

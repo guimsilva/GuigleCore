@@ -53,7 +53,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task GetAddressPartsFromSearchAddress_ShouldReturnAddressResponse()
+        public async Task GetAddressPartsFromSearchAddressResponse_ShouldReturnAddressResponse()
         {
             var address = await _googleGeocodingApi.SearchAddress(_client, Address1);
 
@@ -62,6 +62,18 @@ namespace GuigleApiXUnitIntegrationTest
             Assert.Equal("Brisbane", address.GetCity());
             Assert.Equal("QLD", address.GetState());
             Assert.Equal("Australia", address.GetCountry());
+        }
+
+        [Fact]
+        public async Task GetAddressPartsFromSearchAddressResult_ShouldReturnAddressResponse()
+        {
+            var addressResponse = await _googleGeocodingApi.SearchAddress(_client, Address1);
+            var address = addressResponse.Results.First();
+
+            Assert.Equal("Milton", address.Suburb);
+            Assert.Equal("Brisbane", address.City);
+            Assert.Equal("QLD", address.State);
+            Assert.Equal("Australia", address.Country);
         }
     }
 }

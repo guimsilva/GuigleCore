@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageId>GuigleCore</PackageId>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <Authors>Gui Silva</Authors>
     <Company>Devs4Apps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -13,8 +13,7 @@
     <PackageProjectUrl>https://github.com/guimsilva/GuigleCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/guimsilva/GuigleCore</RepositoryUrl>
     <PackageTags>Google Maps; Places; Geocoding; Geolocation</PackageTags>
-    <PackageReleaseNotes>- Added Response&lt;Address&gt; extension to get common address components such as city and country.
-- Aways parsing address components string types</PackageReleaseNotes>
+    <PackageReleaseNotes>- Avoid null references in Address StringTypes when getting parts</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
