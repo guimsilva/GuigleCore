@@ -129,5 +129,16 @@ namespace GuigleApiXUnitIntegrationTest
                 Assert.Equal(placeId, place.PlaceId);
             }
         }
+
+        [Fact]
+        public async Task ComparePlacesWithSamePlaceId_ShouldReturnTrue()
+        {
+            var placeResponse1 = await _googlePlacesApi.SearchPlaceByQuery(_client, "Tuk Tuk Bar", _placeLocation1.Lat, _placeLocation1.Lng);
+            var place1 = placeResponse1.Results.First(p => p.PlaceId == PlaceId1);
+
+            var place2 = await _googlePlacesApi.GetExactPlaceByAddress(_client, Address1);
+
+            Assert.Equal(place1, place2);
+        }
     }
 }

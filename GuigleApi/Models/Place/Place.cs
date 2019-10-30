@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace GuigleApi.Models.Place
 {
-    public class Place : IPlace
+    public class Place : IPlace, IEquatable<IPlace>
     {
         public string PlaceId { get; set; }
         public string Icon { get; set; }
@@ -27,6 +28,27 @@ namespace GuigleApi.Models.Place
         public bool PermanentlyClosed { get; set; }
         public List<PlaceType> Types { get; set; }
         public List<string> StringTypes { get; set; }
+        public List<Address.Address> Addresses { get; set; }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Place);
+        }
+
+        public bool Equals(IPlace other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.PlaceId == other.PlaceId;
+        }
 
         public static async Task<Response<Place>> ParseResponse(HttpResponseMessage response)
         {
@@ -41,8 +63,8 @@ namespace GuigleApi.Models.Place
             try
             {
                 result = ParseResponse(JsonConvert.DeserializeObject<Response<PlaceT>>(content));
-                result.Results?.ForEach(SetPlacetringTypes);
-                result.Candidates?.ForEach(SetPlacetringTypes);
+                result.Results?.ForEach(SetPlaceStringTypes);
+                result.Candidates?.ForEach(SetPlaceStringTypes);
             }
             catch (JsonSerializationException e)
             {
@@ -62,9 +84,9 @@ namespace GuigleApi.Models.Place
             return result;
         }
 
-        private static void SetPlacetringTypes(Place place)
+        public static void SetPlaceStringTypes(IPlace place)
         {
-            if (place.Types is null) return;
+            if (place.Types is null || (place.StringTypes?.Any() ?? false)) return;
             place.StringTypes = new List<string>();
             place.Types.ForEach(type => place.StringTypes.Add(type.ToString()));
         }
@@ -107,7 +129,7 @@ namespace GuigleApi.Models.Place
             };
         }
 
-        private static Place ParsePlace(IPlace place)
+        public static Place ParsePlace(IPlace place)
         {
             if (place is null)
             {

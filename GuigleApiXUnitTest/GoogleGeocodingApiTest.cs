@@ -58,10 +58,10 @@ namespace GuigleApiXUnitIntegrationTest
             var address = await _googleGeocodingApi.SearchAddress(_client, Address1);
 
             Assert.Equal("OK", address.Status);
-            Assert.Equal("Milton", address.GetSuburb());
+            Assert.Equal("Milton", address.GetSuburb()?.Item1);
             Assert.Equal("Brisbane", address.GetCity());
-            Assert.Equal("QLD", address.GetState());
-            Assert.Equal("Australia", address.GetCountry());
+            Assert.Equal("QLD", address.GetState()?.Item1);
+            Assert.Equal("Australia", address.GetCountry()?.Item2);
         }
 
         [Fact]
@@ -70,10 +70,10 @@ namespace GuigleApiXUnitIntegrationTest
             var addressResponse = await _googleGeocodingApi.SearchAddress(_client, Address1);
             var address = addressResponse.Results.First();
 
-            Assert.Equal("Milton", address.Suburb);
-            Assert.Equal("Brisbane", address.City);
-            Assert.Equal("QLD", address.State);
-            Assert.Equal("Australia", address.Country);
+            Assert.Equal("Milton", address.SuburbShortName);
+            Assert.Equal("Brisbane", address.CityShortName);
+            Assert.Equal("QLD", address.StateShortName);
+            Assert.Equal("Australia", address.CountryLongName);
         }
     }
 }

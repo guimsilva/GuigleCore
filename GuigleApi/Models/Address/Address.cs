@@ -25,24 +25,41 @@ namespace GuigleApi.Models.Address
 
         public List<string> StringTypes { get; set; }
 
-        public string Country =>
+        public string CountryShortName =>
+            AddressComponents?
+                .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.country.ToString()) ?? false)?.ShortName;
+        public string CountryLongName =>
             AddressComponents?
                 .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.country.ToString()) ?? false)?.LongName;
 
-        public string State =>
+        public string StateShortName =>
             AddressComponents?
                 .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_1.ToString()) ?? false)?.ShortName;
-
-        public string City =>
+        public string StateLongName =>
+            AddressComponents?
+                .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_1.ToString()) ?? false)?.LongName;
+        
+        public string CityShortName =>
             AddressComponents?
                 .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_2.ToString()) ?? false)?.ShortName;
+        public string CityLongName =>
+            AddressComponents?
+                .FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_2.ToString()) ?? false)?.LongName;
 
-        public string Suburb =>
+        public string SuburbShortName =>
             AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false)?.ShortName ??
             AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.ShortName;
+        public string SuburbLongName =>
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false)?.LongName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.LongName;
 
         public static async Task<Response<Address>> ParseResponse(HttpResponseMessage response)
         {
+            if (response is null)
+            {
+                return null;
+            }
+
             if (!response.IsSuccessStatusCode)
             {
                 throw await Response<AddressT>.ResponseError(response);
@@ -135,7 +152,7 @@ namespace GuigleApi.Models.Address
             return new Address()
             {
                 PlaceId = address.PlaceId,
-                AddressComponents = address.AddressComponentsT.Select(AddressComponent.Parse).ToList(),
+                AddressComponents = address.AddressComponentsT?.Select(AddressComponent.Parse).ToList(),
                 AddressComponentsT = address.AddressComponentsT,
                 AddressComponentsS = address.AddressComponentsS,
                 FormattedAddress = address.FormattedAddress,

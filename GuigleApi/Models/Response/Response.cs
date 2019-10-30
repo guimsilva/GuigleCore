@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -32,7 +31,7 @@ namespace GuigleApi.Models.Response
 
         public static async Task<HttpRequestException> ResponseError(HttpResponseMessage response)
         {
-            return new HttpRequestException($"Error parsing {nameof(response)}. Request status code {response.StatusCode}. More details: {await response.Content?.ReadAsStringAsync()}");
+            return new HttpRequestException($"Error parsing Response<{nameof(T)}>. Request status code {response.StatusCode}. More details: {await response.Content?.ReadAsStringAsync()}");
         }
     }
 }

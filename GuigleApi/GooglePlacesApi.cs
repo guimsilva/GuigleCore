@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GuigleApi.Models.Address;
 using GuigleApi.Models.Place;
 using GuigleApi.Models.Response;
 
@@ -200,6 +201,24 @@ namespace GuigleApi
             var exactPlace = await GetExactPlaceByLocation(client, location.Lat, location.Lng);
 
             return exactPlace;
+        }
+
+        /// <summary>
+        /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
+        /// based on the coordinates provided.
+        /// </summary>
+        public async Task<List<Place>> SearchPlaceAddressNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null)
+        {
+            var placeResult = await SearchPlaceNearBy(client, lat, lng, radiusInMeters, type: type, rankBy: rankBy);
+
+            var placeAddressTasks = placeResult.Results.Select(async place =>
+            {
+                var result = await _googleGeocodingApi.GetAddressFromCoordinates(client, place.Geometry.Location.Lat, place.Geometry.Location.Lng);
+                place.Addresses = result.Results;
+                return place;
+            });
+
+            return (await Task.WhenAll(placeAddressTasks)).ToList();
         }
     }
 }

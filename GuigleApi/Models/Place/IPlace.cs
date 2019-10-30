@@ -22,5 +22,6 @@ namespace GuigleApi.Models.Place
         string Vicinity { get; set; }
         string FormattedAddress { get; set; }
         bool PermanentlyClosed { get; set; }
+        List<Address.Address> Addresses { get; set; }
     }
 }

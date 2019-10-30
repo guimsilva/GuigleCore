@@ -11,6 +11,11 @@ namespace GuigleApi.Models.Address
 
         public static AddressComponent Parse(AddressComponentT addressComponentT)
         {
+            if (addressComponentT is null)
+            {
+                return null;
+            }
+
             return new AddressComponent()
             {
                 LongName = addressComponentT.LongName,
@@ -22,6 +27,11 @@ namespace GuigleApi.Models.Address
 
         public static AddressComponent Parse(AddressComponentS addressComponentS)
         {
+            if (addressComponentS is null)
+            {
+                return null;
+            }
+
             return new AddressComponent()
             {
                 LongName = addressComponentS.LongName,

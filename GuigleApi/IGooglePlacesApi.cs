@@ -1,5 +1,7 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using GuigleApi.Models.Address;
 using GuigleApi.Models.Place;
 using GuigleApi.Models.Response;
 
@@ -63,5 +65,11 @@ namespace GuigleApi
         /// <param name="returnFields">The fields you want to be returned by the query</param>
         /// <returns></returns>
         Task<Place> GetExactPlaceByAddress(HttpClient client, string address);
+
+        /// <summary>
+        /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
+        /// based on the coordinates provided.
+        /// </summary>
+        Task<List<Place>> SearchPlaceAddressNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null);
     }
 }

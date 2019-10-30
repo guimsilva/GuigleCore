@@ -62,5 +62,8 @@ namespace GuigleApi.Models.Place
 
         [JsonProperty("permanently_closed")]
         public bool PermanentlyClosed { get; set; }
+
+        [JsonIgnore]
+        public List<Address.Address> Addresses { get; set; }
     }
 }
