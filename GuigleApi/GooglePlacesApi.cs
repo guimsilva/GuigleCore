@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GuigleApi.Models.Address;
 using GuigleApi.Models.Place;
 using GuigleApi.Models.Response;
 
@@ -89,6 +88,11 @@ namespace GuigleApi
         /// <param name="moreOptionalParameters">There are more optional parameters that can be added to the search request. Check Google Developers Api for more info.</param>
         public async Task<Response<Place>> SearchPlaceNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, string language = null, PlaceType? type = null, string keyWord = null, RankBy? rankBy = null, params (string, string)[] moreOptionalParameters)
         {
+            if (!radiusInMeters.HasValue && !rankBy.HasValue)
+            {
+                throw new ArgumentException("Either Rankby.distance or radius is required'");
+            }
+
             ValidateSearchOptionalParams(radiusInMeters, language, type, keyWord, rankBy, moreOptionalParameters);
 
             var uri = GetPlacesQueryString(
@@ -207,7 +211,7 @@ namespace GuigleApi
         /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided.
         /// </summary>
-        public async Task<List<Place>> SearchPlaceAddressNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null)
+        public async Task<List<Place>> SearchPlaceAddressesNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null)
         {
             var placeResult = await SearchPlaceNearBy(client, lat, lng, radiusInMeters, type: type, rankBy: rankBy);
 
@@ -215,6 +219,26 @@ namespace GuigleApi
             {
                 var result = await _googleGeocodingApi.GetAddressFromCoordinates(client, place.Geometry.Location.Lat, place.Geometry.Location.Lng);
                 place.Addresses = result.Results;
+                return place;
+            });
+
+            return (await Task.WhenAll(placeAddressTasks)).ToList();
+        }
+
+        /// <summary>
+        /// Gets up to 20 places and their address returned from Google Places and Geocoding Apis,
+        /// based on the coordinates provided and using GetPlaceDetailsById to get the formatted address
+        /// and SearchAddress to return only one address.
+        /// </summary>
+        public async Task<List<Place>> SearchPlaceAddressNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null)
+        {
+            var placeResult = await SearchPlaceNearBy(client, lat, lng, radiusInMeters, type: type, rankBy: rankBy);
+
+            var placeAddressTasks = placeResult.Results.Select(async place =>
+            {
+                var placeDetailsResponse = await GetPlaceDetailsById(client, place.PlaceId, new []{ "formatted_address" });
+                var addressesResponse = await _googleGeocodingApi.SearchAddress(client, placeDetailsResponse.Result.FormattedAddress);
+                place.Addresses = addressesResponse.Results;
                 return place;
             });
 

@@ -140,5 +140,23 @@ namespace GuigleApiXUnitIntegrationTest
 
             Assert.Equal(place1, place2);
         }
+
+        [Fact]
+        public async Task SearchPlaceAddressesNearBy_ShouldReturnPlaceResponse()
+        {
+            var places = await _googlePlacesApi.SearchPlaceAddressesNearBy(_client, _placeLocation1.Lat, _placeLocation1.Lng, null, PlaceType.food, RankBy.distance);
+
+            Assert.NotEmpty(places);
+            Assert.NotEmpty(places.SelectMany(place => place.Addresses));
+        }
+
+        [Fact]
+        public async Task SearchPlaceAddressNearBy_ShouldReturnPlaceResponse()
+        {
+            var places = await _googlePlacesApi.SearchPlaceAddressNearBy(_client, _placeLocation1.Lat, _placeLocation1.Lng, null, PlaceType.food, RankBy.distance);
+
+            Assert.NotEmpty(places);
+            Assert.NotNull(places.First().Addresses.Single());
+        }
     }
 }

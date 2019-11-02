@@ -2,6 +2,7 @@
 {
     public enum AddressType
     {
+        cafe,
         street_number,
         street_address,
         route,
@@ -9,7 +10,9 @@
         neighborhood,
         political,
         locality,
+        lodging,
         ward,
+        store,
         sublocality,
         sublocality_level_1,
         sublocality_level_2,
@@ -17,6 +20,7 @@
         sublocality_level_4,
         sublocality_level_5,
         premise,
+        shopping_mall,
         subpremise,
         natural_feature,
         airport,
@@ -27,6 +31,7 @@
         administrative_area_level_3,
         administrative_area_level_4,
         administrative_area_level_5,
+        church,
         colloquial_area,
         country,
         postal_code,

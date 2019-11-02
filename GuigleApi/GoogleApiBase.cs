@@ -53,12 +53,12 @@ namespace GuigleApi
             {
                 if (radiusInMeters.HasValue || !string.IsNullOrWhiteSpace(radius))
                 {
-                    throw new Exception("Can't have Rankby.distance and radius at the same time'");
+                    throw new ArgumentException("Can't have Rankby.distance and radius at the same time'");
                 }
 
                 if (String.IsNullOrWhiteSpace(keyWord) && string.IsNullOrWhiteSpace(skeyWord) && !type.HasValue && string.IsNullOrWhiteSpace(stype) && string.IsNullOrWhiteSpace(name))
                 {
-                    throw new Exception("When using RankBy.distance must also have either keyWorkd, name or type");
+                    throw new ArgumentException("When using RankBy.distance must also have either keyWorkd, name or type");
                 }
             }
         }

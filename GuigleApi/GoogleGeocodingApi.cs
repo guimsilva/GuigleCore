@@ -64,6 +64,11 @@ namespace GuigleApi
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
         public async Task<Response<Address>> SearchAddress(HttpClient client, string address)
         {
+            if (address is null)
+            {
+                throw new ArgumentException("Address is required'");
+            }
+
             var uri = GetGeocodingQueryString(("address", address));
 
             var response = await client.GetAsync(uri);
@@ -103,6 +108,11 @@ namespace GuigleApi
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
         public async Task<Response<Address>> SearchAddress(HttpClient client, string address, Location southwest, Location northeast)
         {
+            if (address is null)
+            {
+                throw new ArgumentException("Address is required'");
+            }
+
             var uri = GetGeocodingQueryString(
                 ("address", address),
                 ("bounds", $"{southwest.Lat},{southwest.Lng}|{northeast.Lat},{northeast.Lng}"));

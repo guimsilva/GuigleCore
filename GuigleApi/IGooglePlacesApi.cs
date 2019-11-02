@@ -70,6 +70,12 @@ namespace GuigleApi
         /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided.
         /// </summary>
+        Task<List<Place>> SearchPlaceAddressesNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null);
+
+        /// <summary>
+        /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
+        /// based on the coordinates provided.
+        /// </summary>
         Task<List<Place>> SearchPlaceAddressNearBy(HttpClient client, double lat, double lng, int? radiusInMeters = null, PlaceType? type = null, RankBy? rankBy = null);
     }
 }
