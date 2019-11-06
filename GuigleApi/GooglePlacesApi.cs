@@ -46,6 +46,32 @@ namespace GuigleApi
             return await Place.ParseResponse(response);
         }
 
+        /// <summary>
+        /// WARNING: This may make several additional calls to Geocoding Api
+        /// Gets up to 20 business and their address returned from Google Places and Geocoding Apis,
+        /// based on the coordinates provided and using GetPlaceDetailsById to get the formatted address
+        /// and SearchAddress to return only one address.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="query"></param>
+        /// <param name="region">https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains</param>
+        /// <param name="returnFields"></param>
+        /// <returns></returns>
+        public async Task<List<Place>> FindBusinessAddress(HttpClient client, string query, double? lat = null, double? lng = null, int? radiusInMeters = 50000, string region = null, string language = null, string pageToken = null, PlaceType? type = null, string[] returnFields = null)
+        {
+            var businessResult = await FindBusiness(client, query, lat, lng, radiusInMeters, region, language, pageToken, type, returnFields);
+
+            var businessAddressTasks = businessResult.Results.Select(async business =>
+            {
+                var placeDetailsResponse = await GetPlaceDetailsById(client, business.PlaceId, new[] { "formatted_address" });
+                var addressesResponse = await _googleGeocodingApi.SearchAddress(client, placeDetailsResponse.Result.FormattedAddress);
+                business.Addresses = addressesResponse.Results;
+                return business;
+            });
+
+            return (await Task.WhenAll(businessAddressTasks)).ToList();
+        }
+
         public async Task<Response<Place>> FindPlaces(HttpClient client, string input, string[] returnFields = null)
         {
             var uri = GetPlacesQueryString(
@@ -208,6 +234,7 @@ namespace GuigleApi
         }
 
         /// <summary>
+        /// WARNING: This may make several additional calls to Geocoding Api
         /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided.
         /// </summary>
@@ -226,6 +253,7 @@ namespace GuigleApi
         }
 
         /// <summary>
+        /// WARNING: This may make several additional calls to Geocoding Api
         /// Gets up to 20 places and their address returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided and using GetPlaceDetailsById to get the formatted address
         /// and SearchAddress to return only one address.

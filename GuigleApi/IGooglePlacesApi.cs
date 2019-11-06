@@ -18,6 +18,8 @@ namespace GuigleApi
         /// <returns></returns>
         Task<Response<Place>> FindBusiness(HttpClient client, string query, double? lat = null, double? lng = null, int? radiusInMeters = 50000, string region = null, string language = null, string pageToken = null, PlaceType? type = null, string[] returnFields = null);
 
+        Task<List<Place>> FindBusinessAddress(HttpClient client, string query, double? lat = null, double? lng = null, int? radiusInMeters = 50000, string region = null, string language = null, string pageToken = null, PlaceType? type = null, string[] returnFields = null);
+
         Task<Response<Place>> FindPlaces(HttpClient client, string input, string[] returnFields = null);
 
         Task<Response<Place>> GetPlaceDetailsById(HttpClient client, string placeId, string[] returnFields = null, string sessionToken = null);

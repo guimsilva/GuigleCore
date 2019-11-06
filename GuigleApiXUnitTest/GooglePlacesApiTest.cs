@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GuigleApi;
 using GuigleApi.Models.Address;
+using GuigleApi.Models.Extension;
 using GuigleApi.Models.Place;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -48,6 +49,25 @@ namespace GuigleApiXUnitIntegrationTest
             Assert.Equal("OK", place.Status);
             Assert.NotEmpty(place.Results);
             Assert.NotEmpty(place.Results.Where(p => p.FormattedAddress == Address1));
+        }
+
+        [Fact]
+        public async Task FindBusinessWithSubtype_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.FindBusiness(_client, "Thai", _placeLocation1.Lat, _placeLocation1.Lng, 100, null, null, null, PlaceType.food);
+
+            Assert.Equal("OK", place.Status);
+            Assert.NotEmpty(place.Results);
+            Assert.NotEmpty(place.Results.Where(p => p.FormattedAddress == Address1));
+            Assert.NotEmpty(place.Results.Where(p => p.PlaceId == PlaceId1));
+        }
+
+        [Fact]
+        public async Task FindBusinessAddressWithSubtype_ShouldReturnBusinesses()
+        {
+            var places = await _googlePlacesApi.FindBusinessAddress(_client, "Thai", _placeLocation1.Lat, _placeLocation1.Lng, 100, null, null, null, PlaceType.food);
+
+            Assert.True(places.All(place => place.Addresses.Count > 0));
         }
 
         [Fact]

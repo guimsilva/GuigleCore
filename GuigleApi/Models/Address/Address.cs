@@ -152,7 +152,9 @@ namespace GuigleApi.Models.Address
             return new Address()
             {
                 PlaceId = address.PlaceId,
-                AddressComponents = address.AddressComponentsT?.Select(AddressComponent.Parse).ToList(),
+                AddressComponents =
+                    address.AddressComponentsT?.Select(AddressComponent.Parse).ToList() ??
+                    address.AddressComponentsS?.Select(AddressComponent.Parse).ToList(),
                 AddressComponentsT = address.AddressComponentsT,
                 AddressComponentsS = address.AddressComponentsS,
                 FormattedAddress = address.FormattedAddress,
