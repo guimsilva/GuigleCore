@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageId>GuigleCore</PackageId>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <Authors>Gui Silva</Authors>
     <Company>Devs4Apps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/guimsilva/GuigleCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/guimsilva/GuigleCore</RepositoryUrl>
     <PackageTags>Google Maps; Places; Geocoding; Geolocation</PackageTags>
-    <PackageReleaseNotes>Added FindBusinessAddress to make less geocoding calls and fixed extension</PackageReleaseNotes>
+    <PackageReleaseNotes>Improved getHash for a better Place comparison</PackageReleaseNotes>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 

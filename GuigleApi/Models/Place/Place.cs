@@ -32,7 +32,7 @@ namespace GuigleApi.Models.Place
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return string.IsNullOrWhiteSpace(PlaceId) ? base.GetHashCode() : PlaceId.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -42,7 +42,7 @@ namespace GuigleApi.Models.Place
 
         public bool Equals(IPlace other)
         {
-            if (other == null)
+            if (other == null || string.IsNullOrWhiteSpace(PlaceId))
             {
                 return false;
             }

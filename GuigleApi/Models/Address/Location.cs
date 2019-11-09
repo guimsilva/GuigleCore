@@ -24,7 +24,7 @@ namespace GuigleApi.Models.Address
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return Convert.ToInt32(Lat * 10000000) + Convert.ToInt32(Lng * 10000000);
         }
 
         public override bool Equals(object obj)
