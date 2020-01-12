@@ -47,7 +47,7 @@ namespace GuigleApi
         }
 
         /// <summary>
-        /// WARNING: This may make several additional calls to Geocoding Api
+        /// WARNING: This may make several additional calls to Geocoding Api.
         /// Gets up to 20 business and their address returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided and using GetPlaceDetailsById to get the formatted address
         /// and SearchAddress to return only one address.
@@ -234,7 +234,7 @@ namespace GuigleApi
         }
 
         /// <summary>
-        /// WARNING: This may make several additional calls to Geocoding Api
+        /// WARNING: This may make several additional calls to Geocoding Api.
         /// Gets up to 20 places and their addresses returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided.
         /// </summary>
@@ -253,7 +253,7 @@ namespace GuigleApi
         }
 
         /// <summary>
-        /// WARNING: This may make several additional calls to Geocoding Api
+        /// WARNING: This may make several additional calls to Geocoding Api.
         /// Gets up to 20 places and their address returned from Google Places and Geocoding Apis,
         /// based on the coordinates provided and using GetPlaceDetailsById to get the formatted address
         /// and SearchAddress to return only one address.

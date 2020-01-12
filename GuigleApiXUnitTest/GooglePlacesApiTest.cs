@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GuigleApi;
 using GuigleApi.Models.Address;
-using GuigleApi.Models.Extension;
 using GuigleApi.Models.Place;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -15,6 +14,7 @@ namespace GuigleApiXUnitIntegrationTest
     public class GooglePlacesApiTest
     {
         private readonly GooglePlacesApi _googlePlacesApi;
+        private readonly GoogleGeocodingApi _googleGeocodingApi;
 
         private int MaxResponseContentBufferSize { get; } = 256000;
         private readonly HttpClient _client;
@@ -23,7 +23,9 @@ namespace GuigleApiXUnitIntegrationTest
         private const string PlaceId2 = "ChIJvxeKP41ZkWsRM_uHzDS5mNk";
         private const string PlaceId3 = "ChIJLTwxhxBakWsRIOvwPqknAOg";
         private const string PlaceId4 = "ChIJB6j6CotZkWsRE3Lk6nffYvI";
+        private const string PlaceId5 = "ChIJBb63YsGZpgARoBqAEYdQBz4";
         private const string Address1 = "21 Park Rd, Milton QLD 4064, Australia";
+        private const string Address5 = "R. Ceará, 1580 - Savassi, Belo Horizonte - MG, 30150-310, Brazil";
         private readonly Location _placeLocation1 = new Location(-27.4703967, 153.0042494);
         private readonly Location _placeLocation2 = new Location(-27.456859, 153.039852);
         private readonly Location _placeLocation3 = new Location(-27.474310, 153.029145);
@@ -36,19 +38,22 @@ namespace GuigleApiXUnitIntegrationTest
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
 
-            _googlePlacesApi = new GooglePlacesApi(config["GoogleApiKey"]);
+            var apiKey = config["GoogleApiKey"];
+            _googlePlacesApi = new GooglePlacesApi(apiKey);
+            _googleGeocodingApi = new GoogleGeocodingApi(apiKey);
 
             _client = new HttpClient {MaxResponseContentBufferSize = MaxResponseContentBufferSize};
         }
 
-        [Fact]
-        public async Task FindBusiness_ShouldReturnPlaceResponse()
+        [InlineData(Address1)]
+        [Theory]
+        public async Task FindBusiness_ShouldReturnPlaceResponse(string address)
         {
-            var place = await _googlePlacesApi.FindBusiness(_client, Address1, type: PlaceType.restaurant);
+            var place = await _googlePlacesApi.FindBusiness(_client, address, type: PlaceType.restaurant);
 
             Assert.Equal("OK", place.Status);
             Assert.NotEmpty(place.Results);
-            Assert.NotEmpty(place.Results.Where(p => p.FormattedAddress == Address1));
+            Assert.NotEmpty(place.Results.Where(p => p.FormattedAddress == address));
         }
 
         [Fact]
@@ -119,13 +124,15 @@ namespace GuigleApiXUnitIntegrationTest
             Assert.NotEmpty(place.Results.Where(p => p.FormattedAddress == Address1));
         }
 
-        [Fact]
-        public async Task SearchExactPlaceByAddress_ShouldReturnPlaceResponse()
+        [InlineData(Address1, PlaceId1)]
+        [InlineData(Address5, PlaceId5)]
+        [Theory]
+        public async Task SearchExactPlaceByAddress_ShouldReturnPlaceResponse(string address, string placeId)
         {
-            var place = await _googlePlacesApi.GetExactPlaceByAddress(_client, Address1);
+            var place = await _googlePlacesApi.GetExactPlaceByAddress(_client, address);
 
             Assert.NotNull(place);
-            Assert.Equal(PlaceId1, place.PlaceId);
+            Assert.Equal(placeId, place.PlaceId);
         }
 
         [Fact]
@@ -174,6 +181,16 @@ namespace GuigleApiXUnitIntegrationTest
         public async Task SearchPlaceAddressNearBy_ShouldReturnPlaceResponse()
         {
             var places = await _googlePlacesApi.SearchPlaceAddressNearBy(_client, _placeLocation1.Lat, _placeLocation1.Lng, null, PlaceType.food, RankBy.distance);
+
+            Assert.NotEmpty(places);
+            Assert.NotNull(places.First().Addresses.Single());
+        }
+
+        [Fact]
+        public async Task SearchPlaceAddressNearByAddress5_ShouldReturnPlaceResponse()
+        {
+            var location = await _googleGeocodingApi.GetCoordinatesFromAddress(_client, Address5);
+            var places = await _googlePlacesApi.SearchPlaceAddressNearBy(_client, location.Lat, location.Lng, null, PlaceType.food, RankBy.distance);
 
             Assert.NotEmpty(places);
             Assert.NotNull(places.First().Addresses.Single());

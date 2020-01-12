@@ -32,6 +32,8 @@ namespace GuigleApi.Models.Extension
             return
                 addresses?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false) ??
                 addresses?.FirstOrDefault(r => r.AddressComponents?.Exists(a => a.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false) ?? false) ??
+                addresses?.FirstOrDefault(r => r.AddressComponents?.Exists(a => a.StringTypes?.Contains(AddressType.sublocality.ToString()) ?? false) ?? false) ??
+                addresses?.FirstOrDefault(r => r.AddressComponents?.Exists(a => a.StringTypes?.Contains(AddressType.sublocality_level_1.ToString()) ?? false) ?? false) ??
                 addresses?.FirstOrDefault(r =>
                     r.AddressComponents != null && r.AddressComponents.Any(a =>
                         a.StringTypes != null && a.StringTypes.Any()

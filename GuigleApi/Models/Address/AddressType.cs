@@ -3,6 +3,7 @@
     public enum AddressType
     {
         cafe,
+        clothing_store,
         street_number,
         street_address,
         route,

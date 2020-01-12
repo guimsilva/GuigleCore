@@ -48,10 +48,14 @@ namespace GuigleApi.Models.Address
 
         public string SuburbShortName =>
             AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false)?.ShortName ??
-            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.ShortName;
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.ShortName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.sublocality.ToString()) ?? false)?.ShortName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.sublocality_level_1.ToString()) ?? false)?.ShortName;
         public string SuburbLongName =>
             AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.administrative_area_level_3.ToString()) ?? false)?.LongName ??
-            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.LongName;
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.locality.ToString()) ?? false)?.LongName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.sublocality.ToString()) ?? false)?.LongName ??
+            AddressComponents?.FirstOrDefault(r => r.StringTypes?.Contains(AddressType.sublocality_level_1.ToString()) ?? false)?.LongName;
 
         public static async Task<Response<Address>> ParseResponse(HttpResponseMessage response)
         {
