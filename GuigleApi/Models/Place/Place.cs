@@ -65,6 +65,7 @@ namespace GuigleApi.Models.Place
                 result = ParseResponse(JsonConvert.DeserializeObject<Response<PlaceT>>(content));
                 result.Results?.ForEach(SetPlaceStringTypes);
                 result.Candidates?.ForEach(SetPlaceStringTypes);
+                SetPlaceStringTypes(result.Result);
             }
             catch (JsonSerializationException e)
             {
@@ -86,7 +87,7 @@ namespace GuigleApi.Models.Place
 
         public static void SetPlaceStringTypes(IPlace place)
         {
-            if (place.Types is null || (place.StringTypes?.Any() ?? false)) return;
+            if (place?.Types is null || (place.StringTypes?.Any() ?? false)) return;
             place.StringTypes = new List<string>();
             place.Types.ForEach(type => place.StringTypes.Add(type.ToString()));
         }
@@ -151,7 +152,7 @@ namespace GuigleApi.Models.Place
                 Rating = place.Rating,
                 Reference = place.Reference,
                 Scope = place.Scope,
-                StringTypes = place.StringTypes,
+                StringTypes = (place.StringTypes ?? new List<string>()).Any() ? place.StringTypes : place.Types?.Select(type => type.ToString())?.ToList(),
                 Types = place.Types,
                 UserRatingsTotal = place.UserRatingsTotal,
                 Vicinity = place.Vicinity
