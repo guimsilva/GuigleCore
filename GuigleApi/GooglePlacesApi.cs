@@ -11,11 +11,13 @@ namespace GuigleApi
     public class GooglePlacesApi : GoogleApiBase, IGooglePlacesApi
     {
         private readonly GoogleGeocodingApi _googleGeocodingApi;
+        public int MaxAttempsForPageTokenRequests { get; set; }
         private readonly List<PlaceType> _politicalLocalityTypes = new List<PlaceType>() { PlaceType.locality, PlaceType.political };
 
-        public GooglePlacesApi(string apiKey) : base(apiKey)
+        public GooglePlacesApi(string apiKey, int maxAttempsForPageTokenRequests = 5) : base(apiKey)
         {
             _googleGeocodingApi = new GoogleGeocodingApi(apiKey);
+            MaxAttempsForPageTokenRequests = maxAttempsForPageTokenRequests;
         }
 
         /// <summary>
@@ -29,21 +31,26 @@ namespace GuigleApi
         {
             var location = lat.HasValue && lng.HasValue ? $"{lat},{lng}" : string.Empty;
 
-            var uri = GetPlacesQueryString(
-                "textsearch",
-                ("query", query),
-                ("type", type?.ToString()),
-                ("location", location),
-                ("radius", radiusInMeters?.ToString()),
-                ("region", region),
-                ("language", language),
-                ("pageToken", pageToken),
-                ("fields", string.Join(",", returnFields ?? GoogleApiBase.SearchFieldsBasic.Concat(GoogleApiBase.SearchFieldsContact).Concat(GoogleApiBase.SearchFieldsAtmosphere)))
-            );
+            var uri = "";
+            if (string.IsNullOrWhiteSpace(pageToken))
+            {
+                uri = GetPlacesQueryString(
+                    "textsearch",
+                    ("query", query),
+                    ("type", type?.ToString()),
+                    ("location", location),
+                    ("radius", radiusInMeters?.ToString()),
+                    ("region", region),
+                    ("language", language),
+                    ("fields", string.Join(",", returnFields ?? GoogleApiBase.SearchFieldsBasic.Concat(GoogleApiBase.SearchFieldsContact).Concat(GoogleApiBase.SearchFieldsAtmosphere)))
+                );
+            }
+            else
+            {
+                uri = $"{GeoPlacesUrl}textsearch/json?pagetoken={pageToken}&key={GoogleApiKey}";
+            }
 
-            var response = await client.GetAsync(uri);
-
-            return await Place.ParseResponse(response);
+            return await MakeRequest(client, uri);
         }
 
         /// <summary>
@@ -155,19 +162,26 @@ namespace GuigleApi
 
             var location = lat.HasValue && lng.HasValue ? $"{lat},{lng}" : string.Empty;
 
-            var uri = GetPlacesQueryString(
-                "textsearch",
-                new (string, string)[] {("query", query),
-                ("location", location),
-                ("radius", radiusInMeters?.ToString()),
-                ("language", language),
-                ("type", type?.ToString())}
-                    .Concat(moreOptionalParameters).ToArray()
-            );
+            var uri = "";
+            if (!(moreOptionalParameters?.ToList()?.Exists(p => p.Item1 == "pagetoken") ?? false))
+            {
+                uri = GetPlacesQueryString(
+                    "textsearch",
+                    new (string, string)[] {("query", query),
+                    ("location", location),
+                    ("radius", radiusInMeters?.ToString()),
+                    ("language", language),
+                    ("type", type?.ToString())}
+                        .Concat(moreOptionalParameters).ToArray()
+                );
+            }
+            else
+            {
+                var pageToken = moreOptionalParameters.First(p => p.Item1 == "pagetoken").Item2;
+                uri = $"{GeoPlacesUrl}textsearch/json?pagetoken={pageToken}&key={GoogleApiKey}";
+            }
 
-            var response = await client.GetAsync(uri);
-
-            return await Place.ParseResponse(response);
+            return await MakeRequest(client, uri);
         }
 
         /// <summary>
@@ -271,6 +285,35 @@ namespace GuigleApi
             });
 
             return (await Task.WhenAll(placeAddressTasks)).ToList();
+        }
+
+        private async Task<Response<Place>> MakeRequest(HttpClient client, string uri)
+        {
+            var hasPageToken = uri.Contains("pagetoken");
+            var maxAttempts = hasPageToken ? MaxAttempsForPageTokenRequests : 1;
+            var attempts = 0;
+
+            Response<Place> result = null;
+            while (attempts < maxAttempts)
+            {
+                try
+                {
+                    var response = await client.GetAsync(uri);
+                    result = await Place.ParseResponse(response);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (!hasPageToken || e.Message != "INVALID_REQUEST")
+                    {
+                        throw;
+                    }
+                    attempts++;
+                    await Task.Delay(300);
+                }
+            }
+
+            return result;
         }
     }
 }

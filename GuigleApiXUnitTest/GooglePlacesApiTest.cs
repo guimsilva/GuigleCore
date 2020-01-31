@@ -45,6 +45,37 @@ namespace GuigleApiXUnitIntegrationTest
             _client = new HttpClient {MaxResponseContentBufferSize = MaxResponseContentBufferSize};
         }
 
+        [Fact]
+        public async Task FindBusiness_NoQuery_ShouldReturnPlaceResponse()
+        {
+            var place = await _googlePlacesApi.FindBusiness(_client, null, type: PlaceType.restaurant);
+
+            Assert.Equal("OK", place.Status);
+            Assert.NotEmpty(place.Results);
+        }
+
+        [Fact]
+        public async Task FindBusiness_NextPageToken_ShouldReturnPlaceResponse()
+        {
+            var placeResponsePage1 = await _googlePlacesApi.FindBusiness(_client, null, type: PlaceType.restaurant);
+            var placeResponsePage2 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage1.NextPageToken);
+            var placeResponsePage3 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage2.NextPageToken);
+
+            Assert.Equal("OK", placeResponsePage1.Status);
+            Assert.NotEmpty(placeResponsePage1.Results);
+            Assert.Equal("OK", placeResponsePage2.Status);
+            Assert.NotEmpty(placeResponsePage2.Results);
+            Assert.Equal("OK", placeResponsePage3.Status);
+            Assert.NotEmpty(placeResponsePage3.Results);
+            Assert.Null(placeResponsePage3.NextPageToken);
+
+            var allTogether = placeResponsePage1.Results.Select(r => r.PlaceId)
+                .Union(placeResponsePage2.Results.Select(r => r.PlaceId))
+                .Union(placeResponsePage3.Results.Select(r => r.PlaceId));
+
+            Assert.Equal(60, allTogether.Distinct().Count()); // Ditinct here shouldn't be necessary, but just in case
+        }
+
         [InlineData(Address1)]
         [Theory]
         public async Task FindBusiness_ShouldReturnPlaceResponse(string address)

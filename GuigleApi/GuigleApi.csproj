@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageId>GuigleCore</PackageId>
-    <Version>1.1.6</Version>
+    <Version>1.1.7</Version>
     <Authors>Gui Silva</Authors>
     <Company>Devs4Apps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/guimsilva/GuigleCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/guimsilva/GuigleCore</RepositoryUrl>
     <PackageTags>Google Maps; Places; Geocoding; Geolocation</PackageTags>
-    <PackageReleaseNotes>Added Travel() to CoordinatesDistance static helper</PackageReleaseNotes>
+    <PackageReleaseNotes>Better support for pagetoken in FindBusiness, FindBusinessAddress and SearchPlaceByQuery</PackageReleaseNotes>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
