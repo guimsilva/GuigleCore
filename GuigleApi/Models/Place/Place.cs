@@ -67,7 +67,7 @@ namespace GuigleApi.Models.Place
                 result.Candidates?.ForEach(SetPlaceStringTypes);
                 SetPlaceStringTypes(result.Result);
             }
-            catch (JsonSerializationException e)
+            catch (JsonSerializationException)
             {
                 result = ParseResponse(JsonConvert.DeserializeObject<Response<PlaceS>>(content));
             }

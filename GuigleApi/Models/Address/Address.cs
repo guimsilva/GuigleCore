@@ -78,7 +78,7 @@ namespace GuigleApi.Models.Address
                 result.Results?.ForEach(SetAddressStringTypes);
                 result.Candidates?.ForEach(SetAddressStringTypes);
             }
-            catch (JsonSerializationException e)
+            catch (JsonSerializationException)
             {
                 result = ParseResponse(JsonConvert.DeserializeObject<Response<AddressS>>(content));
             }
