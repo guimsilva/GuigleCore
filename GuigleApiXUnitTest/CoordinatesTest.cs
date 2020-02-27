@@ -1,5 +1,5 @@
-using GuigleApi;
 using GuigleApi.Models.Address;
+using GuigleApi.Models.Coordinates;
 using Xunit;
 
 namespace GuigleApiXUnitIntegrationTest

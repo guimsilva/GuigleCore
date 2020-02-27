@@ -1,7 +1,8 @@
 ﻿using System;
+using GuigleApi.Models.Address;
 using GuigleApi.Models.Coordinates;
 
-namespace GuigleApi
+namespace GuigleApi.Models.Coordinates
 {
     public static class CoordinatesDistance
     {
@@ -28,7 +29,7 @@ namespace GuigleApi
             return unitOfLength.ConvertFromMiles(dist);
         }
 
-        public static double EarhRadius { get; set; } = 6371;
+        public static double EarhRadiusInKm { get; } = 6371;
 
         /// <summary>
         /// Gets the rounded distance in kilometers
@@ -62,29 +63,26 @@ namespace GuigleApi
             return distance;
         }
 
-        public static Tuple<double, double> GetMiddleCoordinates(double lat1, double lat2, double lng1, double lng2)
+        public static Location Travel(Location startLocation, double initialDegree, double distanceInKm)
         {
-            var dLon = DegreesToRadians(lng2 - lng1);
-            var bx = Math.Cos(DegreesToRadians(lat2)) * Math.Cos(dLon);
-            var @by = Math.Cos(DegreesToRadians(lat2)) * Math.Sin(dLon);
+            double ib = DegreesToRadians(initialDegree);
+            double startLat1Rad = DegreesToRadians(startLocation.Lat);
+            double startLon1Rad = DegreesToRadians(startLocation.Lng);
+            double distRad = distanceInKm / EarhRadiusInKm ;
 
-            var lat = RadiansToDegrees(Math.Atan2(
-                Math.Sin(DegreesToRadians(lat1)) + Math.Sin(DegreesToRadians(lat2)),
-                Math.Sqrt(
-                    (Math.Cos(DegreesToRadians(lat1)) + bx) *
-                    (Math.Cos(DegreesToRadians(lat1)) + bx) + @by * @by)));
+            double a = Math.Sin(distRad) * Math.Cos(startLat1Rad);
+            double lat2 = Math.Asin(Math.Sin(startLat1Rad) * Math.Cos(distRad) + a * Math.Cos(ib));
+            double lon2 = startLon1Rad + Math.Atan2(Math.Sin(ib) * a, Math.Cos(distRad) - Math.Sin(startLat1Rad) * Math.Sin(lat2));
 
-            var lng = lng1 + RadiansToDegrees(Math.Atan2(@by, Math.Cos(DegreesToRadians(lat1)) + bx));
-
-            return new Tuple<double, double>(lat, lng);
+            return new Location(RadiansToDegrees(lat2), RadiansToDegrees(lon2));
         }
 
-        private static double DegreesToRadians(double degrees)
+        public static double DegreesToRadians(double angle)
         {
-            return degrees * (Math.PI / 180.0);
+            return (Math.PI / 180) * angle;
         }
 
-        private static double RadiansToDegrees(double radians)
+        public static double RadiansToDegrees(double radians)
         {
             return radians * (180.0 / Math.PI);
         }
