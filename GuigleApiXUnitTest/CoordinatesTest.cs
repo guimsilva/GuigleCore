@@ -9,7 +9,7 @@ namespace GuigleApiXUnitIntegrationTest
         private readonly Location _placeLocation1 = new Location(-27.4703967, 153.0042494);
 
         [Fact]
-        public void GetDistance_Travel_North_Should_Match()
+        public void GetDistanceTravelNorthShouldMatch()
         {
             var distanceInKm = 1;
             var directionDegree = 0; // North
@@ -22,7 +22,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public void GetDistance_Travel_South_Should_Match()
+        public void GetDistanceTravelSouthShouldMatch()
         {
             var distanceInKm = 1;
             var directionDegree = 180; // South

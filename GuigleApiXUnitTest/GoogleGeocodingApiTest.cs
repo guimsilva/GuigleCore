@@ -33,9 +33,9 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task GetAddressFromCoordinates_ShouldReturnAddressResponse()
+        public async Task GetAddressFromCoordinatesShouldReturnAddressResponse()
         {
-            var address = await _googleGeocodingApi.GetAddressFromCoordinates(_client, _addressLocation1.Lat, _addressLocation1.Lng);
+            var address = await _googleGeocodingApi.GetAddressFromCoordinates(_client, _addressLocation1.Lat, _addressLocation1.Lng).ConfigureAwait(false);
 
             Assert.Equal("OK", address.Status);
             Assert.NotEmpty(address.Results);
@@ -43,9 +43,9 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchAddress_ShouldReturnAddressResponse()
+        public async Task SearchAddressShouldReturnAddressResponse()
         {
-            var address = await _googleGeocodingApi.SearchAddress(_client, Address1);
+            var address = await _googleGeocodingApi.SearchAddress(_client, Address1).ConfigureAwait(false);
 
             Assert.Equal("OK", address.Status);
             Assert.NotEmpty(address.Results);
@@ -53,9 +53,9 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task GetAddressPartsFromSearchAddressResponse_ShouldReturnAddressResponse()
+        public async Task GetAddressPartsFromSearchAddressResponseShouldReturnAddressResponse()
         {
-            var address = await _googleGeocodingApi.SearchAddress(_client, Address1);
+            var address = await _googleGeocodingApi.SearchAddress(_client, Address1).ConfigureAwait(false);
 
             Assert.Equal("OK", address.Status);
             Assert.Equal("Milton", address.Results?.GetSuburb().SuburbLongName);
@@ -65,9 +65,9 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task GetAddressPartsFromSearchAddressResult_ShouldReturnAddressResponse()
+        public async Task GetAddressPartsFromSearchAddressResultShouldReturnAddressResponse()
         {
-            var addressResponse = await _googleGeocodingApi.SearchAddress(_client, Address1);
+            var addressResponse = await _googleGeocodingApi.SearchAddress(_client, Address1).ConfigureAwait(false);
             var address = addressResponse.Results.First();
 
             Assert.Equal("Milton", address.SuburbShortName);

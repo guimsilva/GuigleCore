@@ -46,7 +46,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task FindBusiness_NoQuery_ShouldReturnPlaceResponse()
+        public async Task FindBusinessNoQueryShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.FindBusiness(_client, null, type: PlaceType.restaurant);
 
@@ -55,7 +55,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task FindBusiness_NextPageToken_ShouldReturnPlaceResponse()
+        public async Task FindBusinessNextPageTokenShouldReturnPlaceResponse()
         {
             var placeResponsePage1 = await _googlePlacesApi.FindBusiness(_client, null, type: PlaceType.restaurant);
             var placeResponsePage2 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage1.NextPageToken);
@@ -78,7 +78,7 @@ namespace GuigleApiXUnitIntegrationTest
 
         [InlineData(Address1)]
         [Theory]
-        public async Task FindBusiness_ShouldReturnPlaceResponse(string address)
+        public async Task FindBusinessShouldReturnPlaceResponse(string address)
         {
             var place = await _googlePlacesApi.FindBusiness(_client, address, type: PlaceType.restaurant);
 
@@ -88,7 +88,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task FindBusinessWithSubtype_ShouldReturnPlaceResponse()
+        public async Task FindBusinessWithSubtypeShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.FindBusiness(_client, "Thai", _placeLocation1.Lat, _placeLocation1.Lng, 100, null, null, null, PlaceType.food);
 
@@ -99,7 +99,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task FindBusinessAddressWithSubtype_ShouldReturnBusinesses()
+        public async Task FindBusinessAddressWithSubtypeShouldReturnBusinesses()
         {
             var places = await _googlePlacesApi.FindBusinessAddress(_client, "Thai", _placeLocation1.Lat, _placeLocation1.Lng, 100, null, null, null, PlaceType.food);
 
@@ -107,7 +107,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaces_ShouldReturnPlaceResponse()
+        public async Task SearchPlacesShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.FindPlaces(_client, Address1);
 
@@ -117,7 +117,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task GetPlaceById_ShouldReturnPlaceResponse()
+        public async Task GetPlaceByIdShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.GetPlaceDetailsById(_client, PlaceId1);
 
@@ -126,7 +126,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaceNearBy_ShouldReturnPlaceResponse()
+        public async Task SearchPlaceNearByShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.SearchPlaceNearBy(_client, _placeLocation1.Lat, _placeLocation1.Lng, null, null, PlaceType.food, null, RankBy.distance);
 
@@ -136,7 +136,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaceNearByQuery_ShouldReturnPlaceResponse()
+        public async Task SearchPlaceNearByQueryShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.SearchPlaceByQuery(_client, "Tuk Tuk Bar", _placeLocation1.Lat, _placeLocation1.Lng);
 
@@ -146,7 +146,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaceNearByQueryWithMoreOptionalParams_ShouldReturnPlaceResponse()
+        public async Task SearchPlaceNearByQueryWithMoreOptionalParamsShouldReturnPlaceResponse()
         {
             var place = await _googlePlacesApi.SearchPlaceByQuery(_client, Address1, null, null, null, "en-AU", PlaceType.establishment, ("radius", "10"));
 
@@ -158,7 +158,7 @@ namespace GuigleApiXUnitIntegrationTest
         [InlineData(Address1, PlaceId1)]
         [InlineData(Address5, PlaceId5)]
         [Theory]
-        public async Task SearchExactPlaceByAddress_ShouldReturnPlaceResponse(string address, string placeId)
+        public async Task SearchExactPlaceByAddressShouldReturnPlaceResponse(string address, string placeId)
         {
             var place = await _googlePlacesApi.GetExactPlaceByAddress(_client, address);
 
@@ -167,7 +167,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchExactPlaceByLocation_ShouldReturnPlaceResponse()
+        public async Task SearchExactPlaceByLocationShouldReturnPlaceResponse()
         {
             var locationAndPlaceIds = new List<(Location, string)>
             {
@@ -189,7 +189,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task ComparePlacesWithSamePlaceId_ShouldReturnTrue()
+        public async Task ComparePlacesWithSamePlaceIdShouldReturnTrue()
         {
             var placeResponse1 = await _googlePlacesApi.SearchPlaceByQuery(_client, "Tuk Tuk Bar", _placeLocation1.Lat, _placeLocation1.Lng);
             var place1 = placeResponse1.Results.First(p => p.PlaceId == PlaceId1);
@@ -200,7 +200,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaceAddressesNearBy_ShouldReturnPlaceResponse()
+        public async Task SearchPlaceAddressesNearByShouldReturnPlaceResponse()
         {
             var places = await _googlePlacesApi.SearchPlaceAddressesNearBy(_client, _placeLocation1.Lat, _placeLocation1.Lng, null, PlaceType.food, RankBy.distance);
 
@@ -209,7 +209,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaceAddressNearBy_ShouldReturnPlaceResponse()
+        public async Task SearchPlaceAddressNearByShouldReturnPlaceResponse()
         {
             var places = await _googlePlacesApi.SearchPlaceAddressNearBy(_client, _placeLocation1.Lat, _placeLocation1.Lng, null, PlaceType.food, RankBy.distance);
 
@@ -218,7 +218,7 @@ namespace GuigleApiXUnitIntegrationTest
         }
 
         [Fact]
-        public async Task SearchPlaceAddressNearByAddress5_ShouldReturnPlaceResponse()
+        public async Task SearchPlaceAddressNearByAddress5ShouldReturnPlaceResponse()
         {
             var location = await _googleGeocodingApi.GetCoordinatesFromAddress(_client, Address5);
             var places = await _googlePlacesApi.SearchPlaceAddressNearBy(_client, location.Lat, location.Lng, null, PlaceType.food, RankBy.distance);
