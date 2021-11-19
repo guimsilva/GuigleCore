@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <PackageId>GuigleCore</PackageId>
-    <Version>1.1.8</Version>
+    <Version>1.1.9</Version>
     <Authors>Gui Silva</Authors>
     <Company>Devs4Apps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -14,7 +14,8 @@
     <RepositoryUrl>https://github.com/guimsilva/GuigleCore</RepositoryUrl>
     <PackageTags>Google Maps; Places; Geocoding; Geolocation</PackageTags>
     <PackageReleaseNotes>Downgrading to .net core 2.2 because 3+ versions don't seem to be mature enough yet.</PackageReleaseNotes>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.99.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

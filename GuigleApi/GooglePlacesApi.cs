@@ -29,10 +29,10 @@ namespace GuigleApi
         /// <returns></returns>
         public async Task<Response<Place>> FindBusiness(HttpClient client, string query, double? lat = null, double? lng = null, int? radiusInMeters = 50000, string region = null, string language = null, string pageToken = null, PlaceType? type = null, string[] returnFields = null)
         {
-            var location = lat.HasValue && lng.HasValue ? $"{lat},{lng}" : string.Empty;
+            var location = lat.HasValue && lng.HasValue ? FormatLatLong(lat.Value,lng.Value) : string.Empty;
 
-            var uri = "";
-            if (string.IsNullOrWhiteSpace(pageToken))
+			string uri;
+			if (string.IsNullOrWhiteSpace(pageToken))
             {
                 uri = GetPlacesQueryString(
                     "textsearch",
@@ -131,7 +131,7 @@ namespace GuigleApi
             var uri = GetPlacesQueryString(
                 "nearbysearch",
                 new (string, string)[] {
-                ("location", $"{lat},{lng}"),
+                ("location",FormatLatLong(lat,lng)),
                 ("radius", radiusInMeters.ToString()),
                 ("language", language),
                 ("type", type?.ToString()),
@@ -160,7 +160,7 @@ namespace GuigleApi
         {
             ValidateSearchOptionalParams(radiusInMeters, language, type, null, null, moreOptionalParameters);
 
-            var location = lat.HasValue && lng.HasValue ? $"{lat},{lng}" : string.Empty;
+            var location = lat.HasValue && lng.HasValue ? FormatLatLong(lat.Value, lng.Value) : string.Empty;
 
             var uri = "";
             if (!(moreOptionalParameters?.ToList()?.Exists(p => p.Item1 == "pagetoken") ?? false))

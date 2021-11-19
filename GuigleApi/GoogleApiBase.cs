@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using GuigleApi.Models.Place;
@@ -76,5 +77,9 @@ namespace GuigleApi
 
             return queryString;
         }
+    protected static string FormatLatLong(double lat, double lng)
+			{
+      return string.Format(CultureInfo.InvariantCulture, "{0},{1}", lat, lng);
+      }
     }
 }

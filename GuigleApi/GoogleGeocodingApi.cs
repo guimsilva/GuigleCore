@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace GuigleApi
         /// <returns>Returns all results from Google Api as an Response<Address>.</returns>
         public async Task<Response<Address>> GetAddressFromCoordinates(HttpClient client, double lat, double lng)
         {
-            var location = $"{lat},{lng}";
+            //var location = $"{lat},{lng}";
+            var location = FormatLatLong( lat, lng);
 
             var uri = GetGeocodingQueryString(("latlng", location));
 

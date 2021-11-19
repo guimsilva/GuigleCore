@@ -1,0 +1,10 @@
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Debug\netcoreapp3.1\GuigleApi.deps.json
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Debug\netcoreapp3.1\GuigleApi.dll
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Debug\netcoreapp3.1\GuigleApi.pdb
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.csproj.AssemblyReference.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.AssemblyInfoInputs.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.AssemblyInfo.cs
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.csproj.CoreCompileInputs.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.dll
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Debug\netcoreapp3.1\GuigleApi.pdb

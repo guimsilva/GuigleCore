@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GuigleCore</id>
+    <version>1.1.9</version>
+    <authors>Gui Silva</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/guimsilva/GuigleCore</projectUrl>
+    <description>Library to query Google Maps Api</description>
+    <releaseNotes>Downgrading to .net core 2.2 because 3+ versions don't seem to be mature enough yet.</releaseNotes>
+    <tags>Google Maps Places Geocoding Geolocation</tags>
+    <repository url="https://github.com/guimsilva/GuigleCore" />
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Debug\net5.0\GuigleApi.dll" target="lib\net5.0\GuigleApi.dll" />
+  </files>
+</package>
