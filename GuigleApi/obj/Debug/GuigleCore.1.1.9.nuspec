@@ -12,12 +12,12 @@
     <tags>Google Maps Places Geocoding Geolocation</tags>
     <repository url="https://github.com/guimsilva/GuigleCore" />
     <dependencies>
-      <group targetFramework="net5.0">
+      <group targetFramework="net6.0">
         <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Debug\net5.0\GuigleApi.dll" target="lib\net5.0\GuigleApi.dll" />
+    <file src="C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Debug\net6.0\GuigleApi.dll" target="lib\net6.0\GuigleApi.dll" />
   </files>
 </package>

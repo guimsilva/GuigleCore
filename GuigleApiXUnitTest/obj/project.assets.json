@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {
+    "net6.0": {
       "Microsoft.CodeAnalysis.FxCopAnalyzers/2.9.8": {
         "type": "package",
         "dependencies": {
@@ -1708,7 +1708,7 @@
       },
       "GuigleCore/1.1.9": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v5.0",
+        "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "Newtonsoft.Json": "12.0.2"
         },
@@ -6009,7 +6009,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net5.0": [
+    "net6.0": [
       "GuigleCore >= 1.1.9",
       "Microsoft.CodeAnalysis.FxCopAnalyzers >= 2.9.8",
       "Microsoft.Extensions.Configuration >= 3.1.2",
@@ -6043,7 +6043,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net5.0"
+        "net6.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -6052,8 +6052,8 @@
         "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "projectReferences": {
             "C:\\Users\\jdubois\\Source\\Repos\\GuigleCore\\GuigleApi\\GuigleApi.csproj": {
               "projectPath": "C:\\Users\\jdubois\\Source\\Repos\\GuigleCore\\GuigleApi\\GuigleApi.csproj"
@@ -6068,8 +6068,8 @@
       }
     },
     "frameworks": {
-      "net5.0": {
-        "targetAlias": "net5.0",
+      "net6.0": {
+        "targetAlias": "net6.0",
         "dependencies": {
           "Microsoft.CodeAnalysis.FxCopAnalyzers": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

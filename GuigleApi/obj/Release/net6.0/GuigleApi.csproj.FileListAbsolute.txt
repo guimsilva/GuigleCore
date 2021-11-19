@@ -1,0 +1,12 @@
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Release\net6.0\GuigleApi.deps.json
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Release\net6.0\GuigleApi.dll
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Release\net6.0\ref\GuigleApi.dll
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\bin\Release\net6.0\GuigleApi.pdb
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.csproj.AssemblyReference.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.AssemblyInfoInputs.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.AssemblyInfo.cs
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.csproj.CoreCompileInputs.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.dll
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\ref\GuigleApi.dll
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApi\obj\Release\net6.0\GuigleApi.pdb
