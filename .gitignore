@@ -1,0 +1,5 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/GuigleApiXUnitTest/bin/Debug/net5.0/appsettings.json
