@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -224,6 +225,26 @@ namespace GuigleApiXUnitIntegrationTest
 
             Assert.NotEmpty(places);
             Assert.NotNull(places.First().Addresses.Single());
+        }
+
+        [Fact]
+        public async Task SearchPlaceAddressNearByAddress5ShouldReturnPlaceResponseFrench()
+        {
+        var ci = CultureInfo.CurrentCulture;      
+        CultureInfo.CurrentCulture=new CultureInfo("fr-CA");
+			  try 
+          {
+          double test = 123.456789;
+          Assert.NotEqual("123.456789", $"{test}");
+          var location = await _googleGeocodingApi.GetCoordinatesFromAddress(_client, Address5);
+          var places = await _googlePlacesApi.SearchPlaceAddressNearBy(_client, location.Lat, location.Lng, null, PlaceType.food, RankBy.distance);
+          Assert.NotEmpty(places);
+          Assert.NotNull(places.First().Addresses.Single());
+          }
+			  finally
+				  {
+          CultureInfo.CurrentCulture = ci;
+				  }
         }
     }
 }
