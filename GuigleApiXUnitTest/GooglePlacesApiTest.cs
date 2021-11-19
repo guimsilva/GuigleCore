@@ -58,13 +58,12 @@ namespace GuigleApiXUnitIntegrationTest
         public async Task FindBusinessNextPageTokenShouldReturnPlaceResponse()
         {
             var placeResponsePage1 = await _googlePlacesApi.FindBusiness(_client, null, type: PlaceType.restaurant);
-            var placeResponsePage2 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage1.NextPageToken);
-            var placeResponsePage3 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage2.NextPageToken);
-
             Assert.Equal("OK", placeResponsePage1.Status);
             Assert.NotEmpty(placeResponsePage1.Results);
+            var placeResponsePage2 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage1.NextPageToken);
             Assert.Equal("OK", placeResponsePage2.Status);
             Assert.NotEmpty(placeResponsePage2.Results);
+            var placeResponsePage3 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage2.NextPageToken);
             Assert.Equal("OK", placeResponsePage3.Status);
             Assert.NotEmpty(placeResponsePage3.Results);
             Assert.Null(placeResponsePage3.NextPageToken);

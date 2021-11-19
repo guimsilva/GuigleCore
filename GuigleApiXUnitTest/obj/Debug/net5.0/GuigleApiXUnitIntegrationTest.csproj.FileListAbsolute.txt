@@ -109,3 +109,4 @@ C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApiXUnitTest\obj\Debug\net5.0\Gui
 C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApiXUnitTest\obj\Debug\net5.0\ref\GuigleApiXUnitIntegrationTest.dll
 C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApiXUnitTest\obj\Debug\net5.0\GuigleApiXUnitIntegrationTest.pdb
 C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApiXUnitTest\obj\Debug\net5.0\GuigleApiXUnitIntegrationTest.genruntimeconfig.cache
+C:\Users\jdubois\Source\Repos\GuigleCore\GuigleApiXUnitTest\bin\Debug\net5.0\appsettings.json
