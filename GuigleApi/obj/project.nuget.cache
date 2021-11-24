@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "L6x73WfUesDOY3wlFJ+cDvBF2UJ31X+hlShxQXOXdfhfgVtXN5OJjLdxGAlerpeuFeKaidVRitMj4jKZGwc6hA==",
+  "dgSpecHash": "pj7hTyFh3kdwF3aA6+JIUBdJUVosXl21+hf9Ho9Uw2k3vK33v3jIMTjlZT/MIsNjXskrWgM8ZI7Ek/rgWoxiQA==",
   "success": true,
   "projectFilePath": "C:\\Users\\jdubois\\Source\\Repos\\GuigleCore\\GuigleApi\\GuigleApi.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\jdubois\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512"
+    "C:\\Users\\jdubois\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []
 }

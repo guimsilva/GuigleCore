@@ -62,9 +62,11 @@ namespace GuigleApiXUnitIntegrationTest
             Assert.Equal("OK", placeResponsePage1.Status);
             Assert.NotEmpty(placeResponsePage1.Results);
             var placeResponsePage2 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage1.NextPageToken);
+            Assert.NotNull(placeResponsePage2);
             Assert.Equal("OK", placeResponsePage2.Status);
             Assert.NotEmpty(placeResponsePage2.Results);
             var placeResponsePage3 = await _googlePlacesApi.FindBusiness(_client, null, pageToken: placeResponsePage2.NextPageToken);
+            Assert.NotNull(placeResponsePage3); // fails randomly.
             Assert.Equal("OK", placeResponsePage3.Status);
             Assert.NotEmpty(placeResponsePage3.Results);
             Assert.Null(placeResponsePage3.NextPageToken);
@@ -73,7 +75,7 @@ namespace GuigleApiXUnitIntegrationTest
                 .Union(placeResponsePage2.Results.Select(r => r.PlaceId))
                 .Union(placeResponsePage3.Results.Select(r => r.PlaceId));
 
-            Assert.Equal(60, allTogether.Distinct().Count()); // Ditinct here shouldn't be necessary, but just in case
+            Assert.Equal(60, allTogether.Distinct().Count()); // Distinct here shouldn't be necessary, but just in case
         }
 
         [InlineData(Address1)]

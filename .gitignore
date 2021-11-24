@@ -5,4 +5,6 @@
 /GuigleApiXUnitTest/bin/Debug/net5.0/appsettings.json
 /GuigleApiXUnitTest/appsettings.json
 /GuigleApiXUnitTest/obj
+/GuigleApiXUnitTest/bin
 /GuigleCore/.vs
+/GuigleApi/bin

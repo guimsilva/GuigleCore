@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using GuigleApi.Models.Place;
+using System.Globalization; // not needed in .NET 6 ?
 
 namespace GuigleApi
 {

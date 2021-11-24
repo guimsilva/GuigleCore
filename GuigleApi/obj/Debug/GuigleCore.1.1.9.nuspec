@@ -10,10 +10,10 @@
     <description>Library to query Google Maps Api</description>
     <releaseNotes>Downgrading to .net core 2.2 because 3+ versions don't seem to be mature enough yet.</releaseNotes>
     <tags>Google Maps Places Geocoding Geolocation</tags>
-    <repository url="https://github.com/guimsilva/GuigleCore" />
+    <repository type="git" url="https://github.com/guimsilva/GuigleCore" />
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
